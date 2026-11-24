@@ -13,7 +13,7 @@ All notable changes. Format loosely follows [Keep a Changelog](https://keepachan
 - LLM health and keep-alive manager for local Ollama (auto-start, warm-up, retries, one `num_ctx`).
 - Button roles (forward / back-cancel / help-toggle) decided by the connected LLM from the visible label, in any language.
 - `--launch` to set the app's start command; model-proposed launch commands are restricted to known dev runtimes.
-- Example app `examples/hello-wizard`, unit tests, CI.
+- Example app `examples/hello-wizard`, unit tests (`npm run check`); a CI workflow example in `docs/ci.yml.example`.
 
 ### Security
 - Removed the experimental HTTP API server (it listened on all interfaces and ran the pipeline on request).

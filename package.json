@@ -20,7 +20,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --require ts-node/register --test \"tests/**/*.test.ts\"",
     "app": "electron .",
-    "postinstall": "playwright install chromium"
+    "postinstall": "playwright install chromium",
+    "check": "npm run typecheck && npm test"
   },
   "dependencies": {
     "@types/node": "^26.6.6",

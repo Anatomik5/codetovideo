@@ -4,7 +4,7 @@
 
 ## Checklist
 
-- [ ] `npm run typecheck` and `npm test` pass
+- [ ] `npm run check` passes (type check + unit tests)
 - [ ] No hardcoded sites / button texts / languages / URLs (see CONTRIBUTING.md)
 - [ ] No paid services, no new network calls except to the user's LLM endpoint
 - [ ] Child processes go through the silent helpers (no `shell: true`, no `detached` on Windows)

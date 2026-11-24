@@ -16,8 +16,7 @@ Thanks for helping! CTV is young and needs more eyes, more machines and more app
 git clone https://github.com/Anatomik5/codetovideo.git
 cd codetovideo
 npm install        # also downloads Chromium for Playwright
-npm run typecheck  # tsc --noEmit
-npm test           # unit tests (Node 22+, the test script uses a glob)
+npm run check      # type check + unit tests (Node 22+, the test script uses a glob)
 npm run app        # desktop app
 ```
 
@@ -52,7 +51,7 @@ npx ts-node scripts/demo-pipeline.ts \
 ## Pull requests
 
 - Keep PRs focused; explain *why*, not only *what*.
-- Run `npm run typecheck && npm test` before pushing.
+- Run `npm run check` before pushing (there is no hosted CI yet; see ROADMAP.md).
 - If you change behaviour users can see, update the README / manual and add a line to `CHANGELOG.md`.
 - If you add a pure helper, add a unit test next to the others in `tests/`.
 

@@ -10,7 +10,7 @@ CTV works end to end on the author's machine, with a small local model, on one r
 - **Button-role detection costs LLM latency** (cached per label; the first screen is classified in an unrecorded warm-up pass). A faster or non-LLM signal would help, as long as it stays language-free.
 - **Re-shoot of a single scene** can show a small cursor / scroll jump at the cut.
 - **Recording tops out at what Chromium's screencast gives us** (real device-scale capture works, but 4K is slow and heavy).
-- **No end-to-end tests in CI.** CI type-checks and runs unit tests only. A scripted end-to-end run against `examples/hello-wizard` with a tiny local model would catch regressions.
+- **No hosted CI and no end-to-end tests.** Checks run locally (`npm run check`). A ready-to-use GitHub Actions workflow is kept in `docs/ci.yml.example` (copy it to `.github/workflows/ci.yml` on a fork or once the maintainer's account can run Actions). A scripted end-to-end run against `examples/hello-wizard` with a tiny local model would catch regressions.
 - **Remotion's license** is not plain MIT (see [THIRD_PARTY.md](THIRD_PARTY.md)). Companies above a small size need a paid license. An alternative renderer would remove that constraint.
 
 ## Ideas

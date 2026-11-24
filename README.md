@@ -7,7 +7,6 @@
 **Point it at any web app, write one sentence, get a demo or promo video. The AI directs; a real program records. Free, fully local, no audio.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![CI](https://github.com/Anatomik5/codetovideo/actions/workflows/ci.yml/badge.svg)](https://github.com/Anatomik5/codetovideo/actions/workflows/ci.yml)
 ![Status: alpha](https://img.shields.io/badge/status-alpha-orange)
 ![Node 20+](https://img.shields.io/badge/node-20%2B-339933)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -166,7 +165,7 @@ Your LLM decides which mode the instruction needs:
 - **Slow on CPU.** A ~75 s video at 720p takes a few minutes to render; 1080p and above take much longer.
 - **Remotion's license is not plain MIT.** Companies above a small size need a paid license. See [THIRD_PARTY.md](THIRD_PARTY.md). "Free" here means *no per-use fees*, not "no license terms anywhere".
 - **Quality bar of the output** is "decent first cut", not a replacement for a human editor.
-- **Tests:** unit tests for the pure helpers and CI type-checking only. No automated end-to-end tests yet.
+- **Tests:** unit tests for the pure helpers plus a type check (`npm run check`). No automated end-to-end tests and no hosted CI yet.
 - **No audio / narration.** Out of scope for now.
 
 If any of this bites you, [open a run report](https://github.com/Anatomik5/codetovideo/issues/new?template=run_report.yml): that is exactly the feedback the project needs.
