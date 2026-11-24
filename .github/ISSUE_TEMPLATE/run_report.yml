@@ -1,0 +1,59 @@
+name: Run report (it worked / it got stuck)
+description: Tell us how CTV behaved on your app. These reports are the most valuable thing you can send.
+title: "[run] "
+labels: ["run-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Please **redact API keys, private URLs and private data** in anything you paste.
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome
+      options:
+        - Worked well
+        - Worked, but the result was mediocre
+        - Agent got stuck / stopped early
+        - Crashed
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS and Node version
+      placeholder: "Windows 11, Node 22.14"
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model and provider
+      placeholder: "Ollama qwen3.5:4b / Gemini 2.5 flash / ..."
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: What kind of app did you record?
+      placeholder: "Next.js + FastAPI wizard, WordPress admin, static site, ..."
+  - type: dropdown
+    id: format
+    attributes:
+      label: Format / quality / background
+      options:
+        - demo
+        - promo
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Your prompt
+  - type: textarea
+    id: log
+    attributes:
+      label: Log (the last ~60 lines, including any `stopReason`)
+      render: text
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else (screenshots, what you expected)

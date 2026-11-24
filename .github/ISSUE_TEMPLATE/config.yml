@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or idea (Discussions)
+    url: https://github.com/Anatomik5/codetovideo/discussions
+    about: Ask how to use CTV, show what you made, or float an idea.
+  - name: Security problem
+    url: https://github.com/Anatomik5/codetovideo/security/advisories/new
+    about: Please report vulnerabilities privately.

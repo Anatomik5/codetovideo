@@ -1,0 +1,55 @@
+{
+  "name": "codetovideo",
+  "version": "0.2.0",
+  "description": "CTV - turn any app or repo into a promo video from one prompt. The AI is the director; real tools (Playwright, FFmpeg, Remotion) do the work.",
+  "main": "app/main.js",
+  "license": "MIT",
+  "keywords": [
+    "video",
+    "demo",
+    "promo",
+    "remotion",
+    "playwright",
+    "ollama",
+    "llm",
+    "screen-recording"
+  ],
+  "scripts": {
+    "start": "remotion preview src/index.ts",
+    "demo": "npx ts-node scripts/demo-pipeline.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --require ts-node/register --test \"tests/**/*.test.ts\"",
+    "app": "electron .",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "@types/node": "^26.6.6",
+    "dotenv": "^18.0.10",
+    "openai": "^7.62.0",
+    "playwright": "^1.65.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.545",
+    "shiki": "^4.6.0"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.545",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "electron": "^45.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "author": "CodeToVideo contributors",
+  "engines": {
+    "node": ">=18.18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anatomik5/codetovideo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Anatomik5/codetovideo/issues"
+  },
+  "homepage": "https://github.com/Anatomik5/codetovideo#readme"
+}

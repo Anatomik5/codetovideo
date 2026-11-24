@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src 'self' 'unsafe-inline'; media-src file:; img-src 'self' data:" />
+<title>CodeToVideo</title>
+<style>
+  :root {
+    --bg: #0e1116; --panel: #151a22; --line: #262d38; --text: #e6e9ee; --muted: #8b95a5;
+    --accent: #f5a524; --accent-ink: #1a1203; --danger: #ef6a5b; --ok: #4cc38a;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f6f7f9; --panel: #ffffff; --line: #e1e5ea; --text: #161a20; --muted: #5d6877; --accent-ink: #1a1203; }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--bg); color: var(--text); font: 14px/1.45 -apple-system, "Segoe UI", Inter, Roboto, sans-serif; display: flex; flex-direction: column; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; border-bottom: 1px solid var(--line); }
+  .brand { font-weight: 800; letter-spacing: .02em; }
+  .brand b { color: var(--accent); }
+  nav { display: flex; gap: 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+  nav button { background: none; border: 0; color: var(--muted); padding: 6px 16px; border-radius: 8px; cursor: pointer; font: inherit; font-weight: 600; }
+  nav button.on { background: var(--accent); color: var(--accent-ink); }
+  main { flex: 1; overflow: auto; padding: 22px; }
+  .wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+  h2 { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: var(--muted); flex: 1; min-width: 0; }
+  .row { display: flex; gap: 10px; align-items: flex-end; }
+  input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 9px; padding: 9px 11px; font: inherit; width: 100%; outline: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 84px; }
+  button.btn { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 9px; padding: 9px 14px; cursor: pointer; font: inherit; font-weight: 600; white-space: nowrap; }
+  button.btn:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  button.danger { color: var(--danger); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 12px; display: flex; gap: 6px; align-items: center; }
+  .chip i { cursor: pointer; color: var(--muted); font-style: normal; }
+  .hint { color: var(--muted); font-size: 12px; }
+  pre#log { margin: 0; background: #080a0e; color: #b8c2d0; border-radius: 10px; padding: 12px; height: 190px; overflow: auto; font: 12px/1.45 Consolas, "SF Mono", monospace; white-space: pre-wrap; }
+  details summary { cursor: pointer; color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  video { width: 100%; border-radius: 10px; background: #000; max-height: 380px; }
+  .status { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+  .dot.run { background: var(--accent); animation: pulse 1s infinite; }
+  .dot.ok { background: var(--ok); } .dot.err { background: var(--danger); }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .scene { display: flex; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; align-items: baseline; }
+  .scene.on { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .scene .n { color: var(--accent); font-weight: 800; width: 18px; }
+  .scene .t { font-weight: 700; } .scene .c { color: var(--muted); font-size: 12px; }
+  .wrap .wrap { width: 100%; margin: 0; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><b>CTV</b> · CodeToVideo</div>
+  <nav><button id="tab-create" class="on">Create</button><button id="tab-edit">Edit</button></nav>
+</header>
+
+<main>
+<div class="wrap">
+
+  <!-- Model (shared) -->
+  <section>
+    <h2>Model</h2>
+    <div class="row">
+      <label style="max-width:190px">Provider
+        <select id="provider">
+          <option value="ollama">Ollama (local, free)</option>
+          <option value="gemini">Google Gemini</option>
+          <option value="openrouter">OpenRouter</option>
+          <option value="groq">Groq</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="openai">OpenAI</option>
+          <option value="custom">Custom URL</option>
+        </select>
+      </label>
+      <label>Model <input id="model" list="models" placeholder="qwen3.5:4b" spellcheck="false" /><datalist id="models"></datalist></label>
+    </div>
+    <div class="row">
+      <label>Base URL <input id="baseUrl" spellcheck="false" /></label>
+      <label>API key <input id="apiKey" type="password" placeholder="not needed for Ollama" spellcheck="false" /></label>
+    </div>
+    <div class="hint">Any OpenAI-compatible endpoint works. Ollama is started automatically if it is installed but not running.</div>
+  </section>
+
+  <!-- Create -->
+  <div id="view-create" class="wrap" style="max-width:none;padding:0">
+    <section>
+      <h2>Source</h2>
+      <div class="row">
+        <label>Project folder or launch file <input id="file" placeholder="C:\path\to\project  or  tools\dev.py" spellcheck="false" /></label>
+        <button class="btn" id="pickFolder">Folder</button><button class="btn" id="pickFile">File</button>
+      </div>
+      <label>…or URL of an already running app <input id="url" placeholder="http://localhost:3000" spellcheck="false" /></label>
+      <div class="row">
+        <label>Files to upload in the app (in order)<div class="chips" id="uploads"></div></label>
+        <button class="btn" id="addUpload">Add files</button>
+        <label style="max-width:130px">Theme
+          <select id="theme"><option>auto</option><option>dark</option><option>light</option></select>
+        </label>
+        <label style="max-width:190px">Format
+          <select id="format"><option value="demo">Demo walkthrough</option><option value="promo">Corporate promo</option></select>
+        </label>
+        <label style="max-width:150px">Quality
+          <select id="quality">
+            <option value="480">480p</option><option value="720" selected>720p</option><option value="1080">1080p</option>
+            <option value="1440">1440p</option><option value="2160">2160p (4K)</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Background (demo format)
+          <select id="backdrop">
+            <option value="auto">Auto — model draws, built-in motif fills gaps</option>
+            <option value="generate">Model draws it (best with strong models)</option>
+            <option value="motif">Model picks a motif, built-in draws it (fast)</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section>
+      <h2>Prompt</h2>
+      <textarea id="prompt" placeholder="Show the full workflow from upload to export, in English, scroll slowly, industrial style with a crane in the background…"></textarea>
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <div class="status"><span class="dot" id="dot"></span><span id="statusText">Idle</span></div>
+        <div class="row"><button class="btn danger hidden" id="stop">Stop</button><button class="btn primary" id="generate">Generate video</button></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Edit -->
+  <div id="view-edit" class="wrap hidden" style="max-width:none;padding:0">
+    <section>
+      <h2>Scenes of the last video</h2>
+      <div id="scenes" class="chips" style="flex-direction:column;gap:8px"></div>
+      <div class="hint" id="noSession">No video yet — generate one first.</div>
+      <label>What should change in the selected scene?
+        <textarea id="editPrompt" placeholder="Make the title “Cost Breakdown” · shorten the caption · re-shoot this step and scroll to the table…"></textarea>
+      </label>
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <div class="hint">Text/style edits only re-render. Browser changes re-shoot just that scene.</div>
+        <div class="row"><button class="btn" id="rerender">Re-render only</button><button class="btn primary" id="applyEdit">Apply edit</button></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Output -->
+  <section id="outputSec">
+    <h2>Output</h2>
+    <video id="player" controls class="hidden"></video>
+    <div class="row hidden" id="outActions"><button class="btn" id="reveal">Show in folder</button></div>
+    <details open><summary>Log</summary><pre id="log"></pre></details>
+  </section>
+
+</div>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const PRESETS = {
+  ollama: { url: "http://localhost:11434/v1", model: "qwen3.5:4b" },
+  gemini: { url: "https://generativelanguage.googleapis.com/v1beta/openai/", model: "gemini-2.5-flash" },
+  openrouter: { url: "https://openrouter.ai/api/v1", model: "openrouter/free" },
+  groq: { url: "https://api.groq.com/openai/v1", model: "llama-3.3-70b-versatile" },
+  deepseek: { url: "https://api.deepseek.com/v1", model: "deepseek-chat" },
+  openai: { url: "https://api.openai.com/v1", model: "gpt-4o-mini" },
+  custom: { url: "", model: "" },
+};
+let uploads = [];
+let selectedScene = null;
+let lastOut = null;
+let busy = false;
+
+function settings() {
+  return {
+    provider: $("provider").value, model: $("model").value, baseUrl: $("baseUrl").value, apiKey: $("apiKey").value,
+    file: $("file").value, url: $("url").value, theme: $("theme").value, quality: $("quality").value, format: $("format").value, backdrop: $("backdrop").value, prompt: $("prompt").value, uploads,
+  };
+}
+const save = () => window.ctv.saveSettings(settings());
+
+function setStatus(kind, text) { $("dot").className = "dot " + kind; $("statusText").textContent = text; }
+function setBusy(b) {
+  busy = b;
+  for (const id of ["generate", "applyEdit", "rerender"]) $(id).disabled = b;
+  $("stop").classList.toggle("hidden", !b);
+}
+function renderUploads() {
+  $("uploads").innerHTML = "";
+  uploads.forEach((f, i) => {
+    const c = document.createElement("span"); c.className = "chip";
+    c.textContent = f.split(/[\\/]/).pop();
+    const x = document.createElement("i"); x.textContent = "×"; x.onclick = () => { uploads.splice(i, 1); renderUploads(); save(); };
+    c.appendChild(x); $("uploads").appendChild(c);
+  });
+  if (!uploads.length) { const h = document.createElement("span"); h.className = "hint"; h.textContent = "none"; $("uploads").appendChild(h); }
+}
+async function refreshModels() {
+  if ($("provider").value !== "ollama") { $("models").innerHTML = ""; return; }
+  const list = await window.ctv.ollamaModels($("baseUrl").value);
+  $("models").innerHTML = list.map((m) => `<option value="${m}">`).join("");
+}
+function applyPreset(keepModel) {
+  const p = PRESETS[$("provider").value];
+  $("baseUrl").value = p.url;
+  if (!keepModel) $("model").value = p.model;
+  refreshModels();
+}
+function showTab(name) {
+  $("tab-create").classList.toggle("on", name === "create");
+  $("tab-edit").classList.toggle("on", name === "edit");
+  $("view-create").classList.toggle("hidden", name !== "create");
+  $("view-edit").classList.toggle("hidden", name !== "edit");
+  if (name === "edit") loadScenes();
+}
+async function loadScenes() {
+  const s = await window.ctv.session();
+  $("scenes").innerHTML = "";
+  $("noSession").classList.toggle("hidden", !!s);
+  if (!s) return;
+  if (s.outPath) showVideo(s.outPath, s.mtime);
+  if (selectedScene === null || !s.scenes.find((x) => x.id === selectedScene)) selectedScene = s.scenes[0]?.id ?? null;
+  for (const sc of s.scenes) {
+    const d = document.createElement("div");
+    d.className = "scene" + (sc.id === selectedScene ? " on" : "");
+    d.innerHTML = `<span class="n">${sc.index + 1}</span><div style="flex:1"><div class="t"></div><div class="c"></div></div><span class="c">${sc.durationSec.toFixed(1)}s</span>`;
+    d.querySelector(".t").textContent = sc.title; d.querySelector(".c").textContent = sc.caption;
+    d.onclick = () => { selectedScene = sc.id; loadScenes(); };
+    $("scenes").appendChild(d);
+  }
+}
+function showVideo(p, stamp) {
+  lastOut = p;
+  const url = "file:///" + p.replace(/\\/g, "/") + "?t=" + (stamp || Date.now());
+  $("player").src = url; $("player").classList.remove("hidden"); $("outActions").classList.remove("hidden");
+}
+function appendLog(t) { const l = $("log"); l.textContent += t; l.scrollTop = l.scrollHeight; }
+
+async function start(mode) {
+  if (busy) return;
+  const cfg = settings();
+  if (!cfg.model.trim()) return setStatus("err", "Enter a model name");
+  if (mode === "create" && !cfg.file.trim() && !cfg.url.trim()) return setStatus("err", "Choose a project or a URL");
+  if (mode === "edit") {
+    if (!selectedScene) return setStatus("err", "Select a scene");
+    if (!$("editPrompt").value.trim()) return setStatus("err", "Describe the change");
+    cfg.editScene = selectedScene; cfg.editPrompt = $("editPrompt").value;
+  }
+  $("log").textContent = "";
+  const r = await window.ctv.run({ mode, cfg });
+  if (!r.ok) return setStatus("err", r.error);
+  setBusy(true);
+  setStatus("run", mode === "create" ? "Generating… this takes a few minutes" : "Applying…");
+}
+
+window.ctv.onLog(appendLog);
+window.ctv.onDone(async (info) => {
+  setBusy(false);
+  if (info.code === 0) { setStatus("ok", "Done"); showVideo(info.outPath); loadScenes(); }
+  else setStatus("err", "Failed — see log");
+});
+
+$("provider").onchange = () => { applyPreset(false); save(); };
+for (const id of ["model", "baseUrl", "apiKey", "file", "url", "theme", "quality", "format", "backdrop", "prompt"]) $(id).addEventListener("change", save);
+$("baseUrl").addEventListener("change", refreshModels);
+$("pickFolder").onclick = async () => { const [p] = await window.ctv.pick("folder"); if (p) { $("file").value = p; save(); } };
+$("pickFile").onclick = async () => { const [p] = await window.ctv.pick("file"); if (p) { $("file").value = p; save(); } };
+$("addUpload").onclick = async () => { const ps = await window.ctv.pick("files"); uploads.push(...ps); renderUploads(); save(); };
+$("generate").onclick = () => start("create");
+$("applyEdit").onclick = () => start("edit");
+$("rerender").onclick = () => start("rerender");
+$("stop").onclick = () => { window.ctv.stop(); setBusy(false); setStatus("err", "Stopped"); };
+$("reveal").onclick = () => lastOut && window.ctv.reveal(lastOut);
+$("tab-create").onclick = () => showTab("create");
+$("tab-edit").onclick = () => showTab("edit");
+
+(async () => {
+  const s = await window.ctv.loadSettings();
+  $("provider").value = s.provider || "ollama";
+  applyPreset(false);
+  if (s.model) $("model").value = s.model;
+  if (s.baseUrl) $("baseUrl").value = s.baseUrl;
+  $("apiKey").value = s.apiKey || ""; $("file").value = s.file || ""; $("url").value = s.url || "";
+  $("theme").value = s.theme || "auto"; $("quality").value = s.quality || "720"; $("format").value = s.format || "demo"; $("backdrop").value = s.backdrop || "auto"; $("prompt").value = s.prompt || "";
+  uploads = s.uploads || []; renderUploads(); refreshModels();
+  const last = await window.ctv.session();
+  if (last && last.outPath) showVideo(last.outPath, last.mtime);
+})();
+</script>
+</body>
+</html>
