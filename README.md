@@ -13,11 +13,9 @@
 
 [Quick start](#quick-start) · [Formats](#formats-backgrounds-quality) · [How it works](#how-it-works) · [Honest status](#honest-status) · [**Help wanted**](#help-wanted) · [Manual](docs/MANUAL.md)
 
-<video src="https://github.com/Anatomik5/codetovideo/raw/main/docs/demo.mp4" controls muted loop playsinline width="720">
-  <a href="docs/demo.mp4"><img src="docs/demo.gif" alt="Demo made by CTV with a 4B local model" width="640"></a>
-</video>
+<a href="docs/demo.mp4"><img src="docs/demo.gif" alt="Demo made by CTV with a 4B local model (click to play the full video)" width="640"></a>
 
-<sub>▶ Made end to end by CTV with `qwen3.5:4b` running locally and **no manual editing**; the neon backdrop was drawn by the model itself (`--backdrop generate`). If the player does not load, [open the video](docs/demo.mp4).</sub>
+<sub>▶ Made end to end by CTV with `qwen3.5:4b` running locally and **no manual editing**; the neon backdrop was drawn by the model itself (`--backdrop generate`). Click the animation to play the [full video](docs/demo.mp4).</sub>
 
 </div>
 
