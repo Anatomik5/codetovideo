@@ -21,10 +21,6 @@
 
 ---
 
-## Export scene subtitles
-
-Run `npm run subtitles -- out/sessions/<id>/manifest.json` from the project directory to write a UTF-8 SRT beside the session’s output video. Captions start after the intro. A scene with an empty caption uses its title.
-
 ## Why this exists
 
 I was tired of three things:
@@ -156,6 +152,10 @@ Your LLM decides which mode the instruction needs:
 | `--edit-scene <n\|id>` `--edit-prompt "…"` | Scene (1-based or id like `beat_3`) and what to change. |
 | `--re-render-only` | Rebuild the final video from saved clips and manifest; no browser. |
 | `--max-steps <n>` `--no-render` | Developer aids for quick smoke tests. |
+
+### Export scene subtitles
+
+Run `npm run subtitles -- out/sessions/<id>/manifest.json` from the project directory to write a UTF-8 SRT beside the session’s output video. Captions start after the intro. A scene with an empty caption uses its title.
 
 ## Honest status
 
