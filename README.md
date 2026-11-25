@@ -21,6 +21,10 @@
 
 ---
 
+## Export scene subtitles
+
+Run `npm run subtitles -- out/sessions/<id>/manifest.json` from the project directory to write a UTF-8 SRT beside the session’s output video. Captions start after the intro. A scene with an empty caption uses its title.
+
 ## Why this exists
 
 I was tired of three things:

@@ -18,6 +18,7 @@
     "start": "remotion preview src/index.ts",
     "demo": "npx ts-node scripts/demo-pipeline.ts",
     "typecheck": "tsc --noEmit",
+    "subtitles": "ts-node scripts/export-srt.ts",
     "test": "node --require ts-node/register --test \"tests/**/*.test.ts\"",
     "app": "electron .",
     "postinstall": "playwright install chromium",
