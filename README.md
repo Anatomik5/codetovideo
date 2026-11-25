@@ -153,6 +153,10 @@ Your LLM decides which mode the instruction needs:
 | `--re-render-only` | Rebuild the final video from saved clips and manifest; no browser. |
 | `--max-steps <n>` `--no-render` | Developer aids for quick smoke tests. |
 
+### Export scene subtitles
+
+Run `npm run subtitles -- out/sessions/<id>/manifest.json` from the project directory to write a UTF-8 SRT beside the session’s output video. Captions start after the intro. A scene with an empty caption uses its title.
+
 ## Honest status
 
 **CTV is alpha.** It works end to end, but on a very small test surface. Please read this before you invest time:
