@@ -15,12 +15,12 @@ CTV works end to end on the author's machine, with a small local model, on one r
 
 ## Ideas
 
-- 🙋 **Subtitles, next steps:** `.srt` export exists (thanks Dathinel). Still open: `.vtt`, wrapping long captions into readable lines and splitting them over a scene's duration.
+- 🙋 **Subtitles, next steps:** `.srt` export exists (thanks Dathinel). Still open (see #8): `.vtt`, wrapping long captions into readable lines and splitting them over a scene's duration.
 - 🙋 **More promo templates** (different camera language, vertical 9:16 and square formats for social posts).
 - 🙋 **Packaging:** electron-builder installers for Windows / macOS / Linux (unsigned is fine to start).
 - 🙋 **Docker image** that runs the pipeline headless with a local model sidecar.
 - 🙋 **More unit tests** for `planScenes`, edit-patch parsing and the partial-render planner.
-- **Free local TTS + music** (opt-in) to give the videos a voice, keeping the "no paid service" rule. Needs a design discussion first.
+- **Optional narration with a free local TTS** (opt-in, off by default, keeping the "no paid service" rule): design discussion in #9. Background music is a later question.
 - **Better scene planning from a user's own storyboard** (a Markdown outline instead of one prompt).
 - **Pluggable "format" API** so formats can live outside the core.
 - **Vision-assisted navigation** for strong multimodal models (optional, never required).
