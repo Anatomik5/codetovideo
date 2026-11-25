@@ -229,6 +229,10 @@ out/sessions/              your saved sessions (git-ignored)
 
 Translations: [Русский](docs/ru/README.md) *(community-style translation, may lag behind this file)*.
 
+## Thanks
+
+- [Dathinel](https://github.com/Dathinel): the first outside contribution, the SRT subtitle exporter (#7), which the desktop app's **Export subtitles** button and the per-session `final.srt` build on.
+
 ## License
 
 CTV is released under the [MIT License](LICENSE): **use it for free, for any purpose, modify it and share it.** The dependencies keep their own licenses, most importantly Remotion's (companies above a small size need its commercial license): see [THIRD_PARTY.md](THIRD_PARTY.md).
