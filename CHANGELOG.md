@@ -13,6 +13,7 @@ All notable changes. Format loosely follows [Keep a Changelog](https://keepachan
 - LLM health and keep-alive manager for local Ollama (auto-start, warm-up, retries, one `num_ctx`).
 - Button roles (forward / back-cancel / help-toggle) decided by the connected LLM from the visible label, in any language.
 - `--launch` to set the app's start command; model-proposed launch commands are restricted to known dev runtimes.
+- Subtitle export: `final.srt` is written into every session after rendering, and the desktop app has an **Export subtitles (.srt)** button (initial exporter contributed by Dathinel).
 - Example app `examples/hello-wizard`, unit tests (`npm run check`); a CI workflow example in `docs/ci.yml.example`.
 
 ### Security

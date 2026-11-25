@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("ctv", {
   run: (req) => ipcRenderer.invoke("run:start", req),
   stop: () => ipcRenderer.invoke("run:stop"),
   reveal: (p) => ipcRenderer.invoke("shell:reveal", p),
+  exportSubtitles: (saveTo) => ipcRenderer.invoke("subtitles:export", saveTo),
   onLog: (cb) => ipcRenderer.on("run:log", (_e, line) => cb(line)),
   onDone: (cb) => ipcRenderer.on("run:done", (_e, info) => cb(info)),
 });

@@ -29,12 +29,16 @@ export function scenesToSrt({introSec, scenes}: {introSec: number; scenes: Scene
   return cues.join("\n");
 }
 
+/** Writes `final.srt` next to the manifest (inside the session folder, beside `final.mp4`) and returns its path. */
+export function writeSrtForManifest(manifestPath: string): string {
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const output = path.join(path.dirname(manifestPath), "final.srt");
+  fs.writeFileSync(output, scenesToSrt(manifest), "utf8");
+  return output;
+}
+
 if (require.main === module) {
   const file = process.argv[2];
   if (!file) throw new Error("Usage: npm run subtitles -- path/to/manifest.json");
-  const manifest = JSON.parse(fs.readFileSync(file, "utf8"));
-  const video = path.parse(manifest.outPath);
-  const output = path.join(video.dir, video.name + ".srt");
-  fs.writeFileSync(output, scenesToSrt(manifest), "utf8");
-  console.log(output);
+  console.log(writeSrtForManifest(file));
 }

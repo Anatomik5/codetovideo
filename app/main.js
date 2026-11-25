@@ -10,6 +10,7 @@ const spawn = (cmd, args, opts = {}) => rawSpawn(cmd, args, { windowsHide: true,
 const ROOT = path.resolve(__dirname, "..");
 const TS_NODE = path.join(ROOT, "node_modules", "ts-node", "dist", "bin.js");
 const SESSIONS = path.join(ROOT, "out", "sessions");
+const nodeBin = () => process.env.npm_node_execpath || "node";
 const settingsFile = () => path.join(app.getPath("userData"), "settings.json");
 
 let win = null;
@@ -120,6 +121,39 @@ ipcMain.handle("session:get", () => {
   }
 });
 
+// Saves the subtitles (.srt) of the newest session. The file is kept in the session folder next to final.mp4
+// (created after every render); sessions made before that existed are converted on demand.
+ipcMain.handle("subtitles:export", async (_e, saveTo) => {
+  const dir = latestSession();
+  if (!dir) return { ok: false, error: "No saved session yet. Generate a video first." };
+  const srt = path.join(dir, "final.srt");
+  try {
+    if (!fs.existsSync(srt)) {
+      await new Promise((resolve, reject) => {
+        const c = spawn(nodeBin(), [TS_NODE, "scripts/export-srt.ts", path.join(dir, "manifest.json")], { cwd: ROOT, windowsHide: true, stdio: "ignore" });
+        c.on("error", reject);
+        c.on("exit", (code) => (code === 0 ? resolve() : reject(new Error("The subtitle exporter failed."))));
+      });
+    }
+    let target = saveTo;
+    if (!target) {
+      let title = "video";
+      try { title = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8")).videoTitle || title; } catch { /* default name */ }
+      const safe = String(title).replace(/[^\p{L}\p{N}._ -]+/gu, "").trim().slice(0, 60) || "video";
+      const r = await dialog.showSaveDialog(win, {
+        defaultPath: path.join(app.getPath("videos"), `${safe}.srt`),
+        filters: [{ name: "SubRip subtitles", extensions: ["srt"] }],
+      });
+      if (r.canceled || !r.filePath) return { ok: false, canceled: true };
+      target = r.filePath;
+    }
+    fs.copyFileSync(srt, target);
+    return { ok: true, path: target };
+  } catch (err) {
+    return { ok: false, error: String((err && err.message) || err) };
+  }
+});
+
 ipcMain.handle("shell:reveal", (_e, p) => { if (p && fs.existsSync(p)) shell.showItemInFolder(p); });
 ipcMain.handle("run:stop", () => stopRun());
 
@@ -156,14 +190,13 @@ ipcMain.handle("run:start", (_e, req) => {
   // Run the pipeline under real node.exe (not electron.exe). With windowsHide the process gets a console WITHOUT a
   // window, and every grandchild (python, npm, ffmpeg, chromium helpers …) inherits that invisible console instead of
   // opening its own visible one. electron.exe is a GUI process without a console, so its children would each flash one.
-  const nodeBin = process.env.npm_node_execpath || "node";
   const env = { ...process.env, FORCE_COLOR: "0" };
   delete env.ELECTRON_RUN_AS_NODE;
   if (c.apiKey) env.LLM_API_KEY = c.apiKey; // passed via env, never on the command line
 
   const send = (line) => win && !win.isDestroyed() && win.webContents.send("run:log", line);
   send(`> ${req.mode}  (model ${c.model || "default"})\n`);
-  child = spawn(nodeBin, args, { cwd: ROOT, env, windowsHide: true, detached: process.platform !== "win32" });
+  child = spawn(nodeBin(), args, { cwd: ROOT, env, windowsHide: true, detached: process.platform !== "win32" });
   const onData = (buf) => send(buf.toString().replace(/\x1b\[[0-9;]*[A-Za-z]/g, ""));
   child.stdout.on("data", onData);
   child.stderr.on("data", onData);

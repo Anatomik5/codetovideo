@@ -154,7 +154,7 @@
   <section id="outputSec">
     <h2>Output</h2>
     <video id="player" controls class="hidden"></video>
-    <div class="row hidden" id="outActions"><button class="btn" id="reveal">Show in folder</button></div>
+    <div class="row hidden" id="outActions" style="align-items:center"><button class="btn" id="reveal">Show in folder</button><button class="btn" id="subs" title="Save the scene captions as a subtitle file (.srt)">Export subtitles (.srt)</button><span class="hint" id="outStatus"></span></div>
     <details open><summary>Log</summary><pre id="log"></pre></details>
   </section>
 
@@ -277,6 +277,12 @@ $("applyEdit").onclick = () => start("edit");
 $("rerender").onclick = () => start("rerender");
 $("stop").onclick = () => { window.ctv.stop(); setBusy(false); setStatus("err", "Stopped"); };
 $("reveal").onclick = () => lastOut && window.ctv.reveal(lastOut);
+$("subs").onclick = async () => {
+  $("outStatus").textContent = "";
+  const r = await window.ctv.exportSubtitles();
+  if (r.ok) { $("outStatus").textContent = "Saved: " + r.path; window.ctv.reveal(r.path); }
+  else if (!r.canceled) $("outStatus").textContent = r.error || "Export failed";
+};
 $("tab-create").onclick = () => showTab("create");
 $("tab-edit").onclick = () => showTab("edit");
 

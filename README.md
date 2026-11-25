@@ -155,7 +155,7 @@ Your LLM decides which mode the instruction needs:
 
 ### Export scene subtitles
 
-Run `npm run subtitles -- out/sessions/<id>/manifest.json` from the project directory to write a UTF-8 SRT beside the session’s output video. Captions start after the intro. A scene with an empty caption uses its title.
+Every render also writes `final.srt` into the session folder (`out/sessions/<id>/`, next to `final.mp4`): one cue per scene, shifted by the intro, using the scene title when a caption is empty. In the desktop app press **Export subtitles (.srt)** under the video to save a copy wherever you like. For an older session, or from a script, run `npm run subtitles -- out/sessions/<id>/manifest.json`.
 
 ## Honest status
 

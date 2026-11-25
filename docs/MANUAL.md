@@ -40,7 +40,7 @@ For Ollama the model list fills in by itself. If Ollama is not running, CTV star
 4. **Prompt** — describe the video (see tips below).
 5. Press **Generate video**. Watch the **Log**; a ~1-minute video takes several minutes. **Stop** cancels.
 
-The finished video appears in **Output**; **Show in folder** opens its location (`out/demo.mp4`).
+The finished video appears in **Output**; **Export subtitles (.srt)** saves the scene captions as a subtitle file (also kept as `final.srt` in the session folder); **Show in folder** opens its location (`out/demo.mp4`).
 
 ### Prompt tips
 
