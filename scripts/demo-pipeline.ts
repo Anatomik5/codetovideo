@@ -3479,6 +3479,49 @@ interface ScenePatch {
   outroLine?: string;
 }
 
+/** Pure part of planSceneEdit(): sanitise a decoded LLM patch without contacting the model. */
+export function normalizeScenePatch(raw: any, allowReshoot: boolean): ScenePatch {
+  const hex = (v: any) => (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v.trim()) ? v.trim() : undefined);
+  const str = (v: any, max: number) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : undefined);
+  return {
+    mode: allowReshoot && raw?.mode === "reshoot" ? "reshoot" : "metadata",
+    title: str(raw?.title, 40),
+    caption: str(raw?.caption, 68),
+    targetGoal: str(raw?.targetGoal, 140),
+    backdropBrief: str(raw?.backdropBrief, 600),
+    backdropMotif: str(raw?.backdropMotif, 20),
+    accentColor: hex(raw?.accentColor),
+    secondaryColor: hex(raw?.secondaryColor),
+    bgStart: hex(raw?.bgStart),
+    bgEnd: hex(raw?.bgEnd),
+    videoTitle: str(raw?.videoTitle, 64),
+    introLine: str(raw?.introLine, 180),
+    outroLine: str(raw?.outroLine, 180),
+  };
+}
+
+/** Pure part of runEdit(): clear fields that merely echo the current manifest values. */
+export function dropNoOpEditFields(
+  patch: ScenePatch,
+  current: {
+    artDirection: Pick<ArtDirection, "accentColor" | "secondaryColor" | "bgStart" | "bgEnd">;
+    videoTitle: string;
+    introLine: string;
+    outroLine: string;
+  },
+): ScenePatch {
+  const same = (a?: string, b?: string) => !a || (b ?? "").toLowerCase() === a.toLowerCase();
+  const cleaned: ScenePatch = { ...patch };
+  if (same(cleaned.accentColor, current.artDirection.accentColor)) cleaned.accentColor = undefined;
+  if (same(cleaned.secondaryColor, current.artDirection.secondaryColor)) cleaned.secondaryColor = undefined;
+  if (same(cleaned.bgStart, current.artDirection.bgStart)) cleaned.bgStart = undefined;
+  if (same(cleaned.bgEnd, current.artDirection.bgEnd)) cleaned.bgEnd = undefined;
+  if (same(cleaned.videoTitle, current.videoTitle)) cleaned.videoTitle = undefined;
+  if (same(cleaned.introLine, current.introLine)) cleaned.introLine = undefined;
+  if (same(cleaned.outroLine, current.outroLine)) cleaned.outroLine = undefined;
+  return cleaned;
+}
+
 /** LLM decides what an edit instruction changes: texts/style (Mode A) or the on-screen walkthrough (Mode B). */
 async function planSceneEdit(manifest: SessionManifest, scene: SceneManifestEntry, editPrompt: string, allowReshoot: boolean): Promise<ScenePatch> {
   const client = getLlmClient();
@@ -3526,26 +3569,11 @@ Instruction: ${editPrompt}`;
     raw = await call(true);
   }
 
-  const hex = (v: any) => (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v.trim()) ? v.trim() : undefined);
-  const str = (v: any, max: number) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : undefined);
-  return {
-    mode: allowReshoot && raw?.mode === "reshoot" ? "reshoot" : "metadata",
-    title: str(raw?.title, 40),
-    caption: str(raw?.caption, 68),
-    targetGoal: str(raw?.targetGoal, 140),
-    backdropBrief: str(raw?.backdropBrief, 600),
-    backdropMotif: str(raw?.backdropMotif, 20),
-    accentColor: hex(raw?.accentColor),
-    secondaryColor: hex(raw?.secondaryColor),
-    bgStart: hex(raw?.bgStart),
-    bgEnd: hex(raw?.bgEnd),
-    videoTitle: str(raw?.videoTitle, 64),
-    introLine: str(raw?.introLine, 180),
-    outroLine: str(raw?.outroLine, 180),
-  };
+  return normalizeScenePatch(raw, allowReshoot);
 }
 
-function findScene(manifest: SessionManifest, ref: string): SceneManifestEntry {
+/** Pure lookup used by --edit-scene: exact id first, then a trailing 1-based number. */
+export function findScene(manifest: SessionManifest, ref: string): SceneManifestEntry {
   const key = String(ref).trim();
   const byId = manifest.scenes.find((s) => s.id === key);
   if (byId) return byId;
@@ -3586,17 +3614,9 @@ async function runEdit(options: PipelineOptions): Promise<PipelineResult> {
   if (hasEdit) {
     const scene = findScene(manifest, String(options.editScene));
     if (!editPrompt) throw new Error("--edit-scene requires --edit-prompt.");
-    const patch = await planSceneEdit(manifest, scene, editPrompt, !options.reRenderOnly);
+    const plannedPatch = await planSceneEdit(manifest, scene, editPrompt, !options.reRenderOnly);
     // Drop no-op fields so small models that echo unchanged values never trigger global re-renders.
-    const art0 = manifest.artDirection;
-    const same = (a?: string, b?: string) => !a || (b ?? "").toLowerCase() === a.toLowerCase();
-    if (same(patch.accentColor, art0.accentColor)) patch.accentColor = undefined;
-    if (same(patch.secondaryColor, art0.secondaryColor)) patch.secondaryColor = undefined;
-    if (same(patch.bgStart, art0.bgStart)) patch.bgStart = undefined;
-    if (same(patch.bgEnd, art0.bgEnd)) patch.bgEnd = undefined;
-    if (same(patch.videoTitle, manifest.videoTitle)) patch.videoTitle = undefined;
-    if (same(patch.introLine, manifest.introLine)) patch.introLine = undefined;
-    if (same(patch.outroLine, manifest.outroLine)) patch.outroLine = undefined;
+    const patch = dropNoOpEditFields(plannedPatch, manifest);
     log("Editor", `Patch: ${JSON.stringify(patch)}`);
     log("Editor", `Scene ${scene.index + 1} (${scene.id}) edit mode: ${patch.mode === "reshoot" ? "B (re-shoot clip)" : "A (metadata/style, clips untouched)"}`);
     if (patch.mode === "metadata") partialScene = scene;
