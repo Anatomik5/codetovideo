@@ -121,33 +121,36 @@ ipcMain.handle("session:get", () => {
   }
 });
 
-// Saves the subtitles (.srt) of the newest session. The file is kept in the session folder next to final.mp4
+// Saves the selected subtitle format of the newest session. The file is kept in the session folder next to final.mp4
 // (created after every render); sessions made before that existed are converted on demand.
-ipcMain.handle("subtitles:export", async (_e, saveTo) => {
+ipcMain.handle("subtitles:export", async (_e, saveTo, format = "srt") => {
+  if (format !== "srt" && format !== "vtt") return { ok: false, error: "Unknown subtitle format." };
   const dir = latestSession();
   if (!dir) return { ok: false, error: "No saved session yet. Generate a video first." };
-  const srt = path.join(dir, "final.srt");
+  const source = path.join(dir, `final.${format}`);
   try {
-    if (!fs.existsSync(srt)) {
-      await new Promise((resolve, reject) => {
-        const c = spawn(nodeBin(), [TS_NODE, "scripts/export-srt.ts", path.join(dir, "manifest.json")], { cwd: ROOT, windowsHide: true, stdio: "ignore" });
-        c.on("error", reject);
-        c.on("exit", (code) => (code === 0 ? resolve() : reject(new Error("The subtitle exporter failed."))));
-      });
-    }
     let target = saveTo;
     if (!target) {
       let title = "video";
       try { title = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8")).videoTitle || title; } catch { /* default name */ }
       const safe = String(title).replace(/[^\p{L}\p{N}._ -]+/gu, "").trim().slice(0, 60) || "video";
       const r = await dialog.showSaveDialog(win, {
-        defaultPath: path.join(app.getPath("videos"), `${safe}.srt`),
-        filters: [{ name: "SubRip subtitles", extensions: ["srt"] }],
+        defaultPath: path.join(app.getPath("videos"), `${safe}.${format}`),
+        filters: [{ name: format === "srt" ? "SubRip subtitles" : "WebVTT subtitles", extensions: [format] }],
       });
       if (r.canceled || !r.filePath) return { ok: false, canceled: true };
       target = r.filePath;
     }
-    fs.copyFileSync(srt, target);
+    if (fs.existsSync(source)) {
+      if (path.resolve(source) !== path.resolve(target)) fs.copyFileSync(source, target);
+    } else {
+      await new Promise((resolve, reject) => {
+        const args = [TS_NODE, "scripts/save-subtitle.ts", path.join(dir, "manifest.json"), format, target];
+        const c = spawn(nodeBin(), args, { cwd: ROOT, windowsHide: true, stdio: "ignore" });
+        c.on("error", reject);
+        c.on("exit", (code) => (code === 0 ? resolve() : reject(new Error("The subtitle exporter failed."))));
+      });
+    }
     return { ok: true, path: target };
   } catch (err) {
     return { ok: false, error: String((err && err.message) || err) };
