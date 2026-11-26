@@ -12,6 +12,8 @@ import {
   analyzePeripheralCoverage,
   extractValidSvg,
   parseJsonLoose,
+  repairJson,
+  clipText,
 } from "../scripts/demo-pipeline";
 
 test("tokenizeCommand honours quotes", () => {
@@ -71,4 +73,17 @@ test("parseJsonLoose strips think blocks and fences", () => {
   assert.deepEqual(parseJsonLoose('<think>hmm</think>```json\n{"a":1}\n```'), { a: 1 });
   assert.deepEqual(parseJsonLoose('noise {"b":2} trailing'), { b: 2 });
   assert.throws(() => parseJsonLoose("no json here"));
+});
+
+test("repairJson fixes trailing commas and closes truncated output", () => {
+  assert.deepEqual(JSON.parse(repairJson('{"a":[1,2,],"b":{"c":3,},}')), { a: [1, 2], b: { c: 3 } });
+  assert.deepEqual(JSON.parse(repairJson('{"beats":[{"id":"b1","title":"One"},{"id":"b2","title":"Tw')), { beats: [{ id: "b1", title: "One" }, { id: "b2", title: "Tw" }] });
+  assert.deepEqual(JSON.parse(repairJson('{"a":1,"b":')), { a: 1 });
+  assert.deepEqual(parseJsonLoose('Here you go: {"x":[1,2,3,],} thanks'), { x: [1, 2, 3] });
+});
+
+test("clipText cuts at a word boundary and keeps short text intact", () => {
+  assert.equal(clipText("AI detects errors, risks, and discrepancies across thousands of items.", 68), "AI detects errors, risks, and discrepancies across thousands of…");
+  assert.equal(clipText("Short caption", 68), "Short caption");
+  assert.ok(Array.from(clipText("映".repeat(80), 40)).length <= 40);
 });

@@ -157,6 +157,19 @@ Your LLM decides which mode the instruction needs:
 
 Every render writes `final.srt` and `final.vtt` beside the session video. Long captions wrap to about 42 characters per line and at most two lines per cue. Each cue gets a share of the scene duration based on its text length, after the intro. An empty caption uses the scene title. In the desktop app, choose SRT or WebVTT and press **Export subtitles**. To generate both files for a saved session, run `npm run subtitles -- out/sessions/<id>/manifest.json`.
 
+## Which model?
+
+First community-style comparison on one laptop (RTX 3060 6 GB), one app, one run each ([full report](docs/benchmarks/2026-11-gemma4-vs-qwen.md)):
+
+| | qwen3.5:4b | gemma4:e2b | gemma4:e4b |
+| --- | --- | --- | --- |
+| Speed (plan · total) | 25 s · 225 s | **14 s · 121 s** | 25 s · 167 s |
+| Plan / captions | **concise, accurate** | marketing tone, too long | **balanced, accurate** |
+| Navigation | 12/12 steps | 12/12 steps | 12/12 steps |
+| Draws its own background | no (falls back to a motif) | yes, but in the center | **yes, along the edges** |
+
+Short version: `qwen3.5:4b` or `gemma4:e2b` with `--backdrop motif` for speed and clean captions; `gemma4:e4b` if you want the model to draw the background. Try your own model with `node scripts/bench-models.cjs --models a,b,c` and share the result.
+
 ## Honest status
 
 **CTV is alpha.** It works end to end, but on a very small test surface. Please read this before you invest time:

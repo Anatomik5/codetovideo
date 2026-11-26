@@ -460,9 +460,60 @@ export function parseJsonLoose(content: string): any {
   } catch {
     const first = cleaned.indexOf("{");
     const last = cleaned.lastIndexOf("}");
-    if (first >= 0 && last > first) return JSON.parse(cleaned.slice(first, last + 1));
+    if (first >= 0 && last > first) {
+      try {
+        return JSON.parse(cleaned.slice(first, last + 1));
+      } catch { /* fall through to repair */ }
+    }
+    if (first >= 0) {
+      try {
+        return JSON.parse(repairJson(cleaned.slice(first)));
+      } catch { /* not repairable */ }
+    }
     throw new Error("LLM response is not valid JSON.");
   }
+}
+
+/** Shortens text to at most `max` characters at a word boundary, adding an ellipsis; never cuts inside a word. */
+export function clipText(text: string, max: number): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  const chars = Array.from(t);
+  if (chars.length <= max) return t;
+  const head = chars.slice(0, max - 1).join("");
+  const cut = head.lastIndexOf(" ");
+  // Text without spaces (e.g. CJK) or a single long word: fall back to a character cut.
+  return `${(cut > max * 0.5 ? head.slice(0, cut) : head).replace(/[\s,;:.\-–—]+$/, "")}…`;
+}
+
+/**
+ * Best-effort repair of JSON written by small models: drops trailing commas and closes a truncated
+ * document (an unterminated string, then any open arrays/objects). Never invents values.
+ */
+export function repairJson(text: string): string {
+  let out = "";
+  const stack: string[] = [];
+  let inString = false;
+  let escaped = false;
+  for (const ch of text) {
+    out += ch;
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') inString = true;
+    else if (ch === "{" || ch === "[") stack.push(ch === "{" ? "}" : "]");
+    else if (ch === "}" || ch === "]") {
+      stack.pop();
+      if (stack.length === 0) break; // ignore anything after the top-level value
+    }
+  }
+  if (inString) out += '"';
+  // Remove a dangling separator or a half-written key/value pair at the cut, then close what is open.
+  out = out.replace(/[,:]\s*$/, "").replace(/,\s*"[^"]*"\s*$/, "");
+  while (stack.length) out += stack.pop();
+  return out.replace(/,(\s*[}\]])/g, "$1");
 }
 
 function stripThink(raw: string): string {
@@ -592,7 +643,10 @@ async function chatWithHardTimeout(
               },
             }),
           });
-          if (!res.ok) throw new Error(`Ollama /api/chat HTTP ${res.status}`);
+          if (!res.ok) {
+            const detail = await res.text().catch(() => "");
+            throw new Error(`Ollama /api/chat HTTP ${res.status}: ${detail.slice(0, 200)}`);
+          }
           return res.json(); // body is read inside the race, so the hard timeout covers it too
         })(),
         timeout,
@@ -624,6 +678,11 @@ async function requestChat(
       const { response_format: _rf, ...rest } = body;
       return chatWithHardTimeout(client, rest, timeoutMs, label, enableThinking);
     }
+    if (enableThinking && /think/i.test(msg) && /support|unknown|invalid/i.test(msg)) {
+      // Some models (e.g. without a reasoning mode) reject `think: true`: retry the same request without it.
+      log("LLM", `${label}: model rejected thinking mode, retrying without it.`);
+      return chatWithHardTimeout(client, body, timeoutMs, label, false);
+    }
     if (isOllamaEndpoint(client.baseURL) && !/hard timeout/i.test(msg)) {
       // Local model: re-verify the server, re-warm the model and retry once.
       log("ollama", `${label} failed (${msg.slice(0, 120)}) — health-check and one retry.`);
@@ -644,7 +703,8 @@ async function withRetry<T>(label: string, fn: () => Promise<T>, attempts = 3, b
       lastError = err;
       const msg = (err as Error)?.message || String(err);
       if (/exceeded your current quota|billing|404/i.test(msg)) break;
-      const retryable = /503|429|UNAVAILABLE|overloaded|high demand|ECONNRESET|ETIMEDOUT|fetch failed/i.test(msg);
+      // Malformed JSON from a small model is worth one more try: sampling usually gives a valid answer the second time.
+      const retryable = /503|429|UNAVAILABLE|overloaded|high demand|ECONNRESET|ETIMEDOUT|fetch failed|not valid JSON|in JSON at position|Unexpected token|Unexpected end of JSON/i.test(msg);
       if (!retryable || i === attempts) break;
       const wait = baseDelayMs * i;
       log(label, `Retry ${i}/${attempts - 1} in ${wait}ms`);
@@ -1441,8 +1501,8 @@ ${keyFilesText}`,
 
   const beats: StoryBeatPlan[] = rawBeats.slice(0, 6).map((b: any, i: number) => ({
     id: String(b.id || `beat_${i + 1}`),
-    title: String(b.title || b.caption || `Beat ${i + 1}`).slice(0, 40),
-    caption: String(b.caption || b.title || "").slice(0, 68),
+    title: clipText(String(b.title || b.caption || `Beat ${i + 1}`), 40),
+    caption: clipText(String(b.caption || b.title || ""), 68),
     targetGoal: String(b.targetGoal || b.caption || "").slice(0, 140),
   }));
 
