@@ -14,6 +14,8 @@ import {
   parseJsonLoose,
   repairJson,
   clipText,
+  planScenes,
+  planPartialRender,
 } from "../scripts/demo-pipeline";
 
 test("tokenizeCommand honours quotes", () => {
@@ -86,4 +88,67 @@ test("clipText cuts at a word boundary and keeps short text intact", () => {
   assert.equal(clipText("AI detects errors, risks, and discrepancies across thousands of items.", 68), "AI detects errors, risks, and discrepancies across thousands of…");
   assert.equal(clipText("Short caption", 68), "Short caption");
   assert.ok(Array.from(clipText("映".repeat(80), 40)).length <= 40);
+});
+
+const beats = ["first", "second", "third"].map((id) => ({ id, title: id, caption: id, targetGoal: id }));
+
+test("planScenes cuts at a click effect or quiet gap and rebases action times", () => {
+  const record: Parameters<typeof planScenes>[0] = {
+    durationSec: 9,
+    displayUrl: "initial",
+    states: [
+      { atSec: 0, url: "initial", snippet: "before" },
+      { atSec: 2, url: "after", snippet: "updated" },
+    ],
+    actions: [
+      { kind: "scroll", startSec: 7, endSec: 8, url: "after", label: "C" },
+      { kind: "click", startSec: 1, endSec: 3, effectSec: 2, url: "initial", label: "A" },
+      { kind: "fill", startSec: 4, endSec: 5, url: "after", label: "B" },
+    ],
+  };
+  const scenes = planScenes(record, beats);
+  assert.deepEqual(scenes.map((s) => [s.beat.id, s.start, s.end]), [
+    ["first", 0, 2.15], ["second", 2.15, 6], ["third", 6, 9],
+  ]);
+  assert.deepEqual(scenes.map((s) => s.actions.map((a) => [a.label, a.startSec, a.endSec])), [
+    [["A", 1, 3]], [["B", 1.85, 2.85]], [["C", 1, 2]],
+  ]);
+  assert.equal(scenes[1].startUrl, "after");
+  assert.equal(scenes[1].domSnapshot, "updated");
+});
+
+test("planScenes keeps one scene for an empty capture", () => {
+  const scenes = planScenes({ durationSec: 0, displayUrl: "initial", actions: [], states: [] }, beats);
+  assert.deepEqual(scenes, [
+    { beat: beats[0], start: 0, end: 0.5, actions: [], startUrl: "initial", domSnapshot: "" },
+  ]);
+});
+
+const prevProps = {
+  fps: 10, durationInFrames: 100, introSec: 1, outHeight: 720, uiVideoFile: "previous.mp4",
+  chapters: ["A", "B"], captions: ["A", "B"], storyBeats: ["A", "B"],
+};
+const editedProps = {
+  ...prevProps, uiVideoFile: "current.mp4", chapters: ["A", "C"], captions: ["A", "C"], storyBeats: ["A", "C"],
+};
+const probes = { probeVideoGeometry: () => ({ width: 1280, height: 720 }), probeKeyframes: () => [0, 20, 40, 60] };
+
+test("planPartialRender includes padding and ends before the next keyframe or at the last frame", () => {
+  // With the intro and one frame of padding, the edit covers frames 39..60.
+  const scene = { startSec: 3, endSec: 4.9 };
+  const plan = (keys: number[]) => planPartialRender(prevProps, editedProps, 1, scene, "final.mp4", {
+    ...probes, probeKeyframes: () => keys,
+  });
+  assert.deepEqual(plan([0, 20, 40, 60, 80]), { from: 20, to: 79, totalFrames: 100 });
+  assert.deepEqual(plan([0, 20, 40, 60]), { from: 20, to: 99, totalFrames: 100 });
+});
+
+test("planPartialRender falls back for edits outside the scene or unusable previous video", () => {
+  const scene = { startSec: 3, endSec: 4.9 };
+  const plan = (props: typeof editedProps, video = probes) =>
+    planPartialRender(prevProps, props, 1, scene, "final.mp4", video);
+  assert.equal(plan({ ...editedProps, captions: ["changed", "C"] }), null);
+  assert.equal(plan({ ...editedProps, durationInFrames: 90 }), null);
+  assert.equal(plan(editedProps, { ...probes, probeVideoGeometry: () => ({ width: 640, height: 720 }) }), null);
+  assert.equal(plan(editedProps, { ...probes, probeKeyframes: () => [] }), null);
 });
