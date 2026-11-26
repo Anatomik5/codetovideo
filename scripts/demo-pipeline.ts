@@ -3090,7 +3090,10 @@ async function refreshTimeline(sessionDir: string, scenes: SceneManifestEntry[])
 }
 
 /** Split the continuous capture into scenes at quiet moments between actions (no mid-motion cuts). */
-export function planScenes(record: RecordResult, beats: StoryBeatPlan[]) {
+export function planScenes(
+  record: Pick<RecordResult, "durationSec" | "actions" | "states" | "displayUrl">,
+  beats: StoryBeatPlan[],
+) {
   const total = Math.max(0.5, record.durationSec);
   const acts = [...record.actions].sort((a, b) => a.startSec - b.startSec);
   const M = acts.length;
@@ -3242,12 +3245,13 @@ function probeKeyframes(file: string, fps: number): number[] {
  * If only the edited scene's own texts changed, return the key-frame-aligned frame range that must be re-rendered.
  * Everything else is copied from the previous final video. Returns null when a full render is required.
  */
-function planPartialRender(
+export function planPartialRender(
   prevProps: Record<string, any>,
   newProps: Record<string, any>,
   sceneIndex: number,
-  scene: SceneManifestEntry,
+  scene: Pick<SceneManifestEntry, "startSec" | "endSec">,
   outPath: string,
+  probes = { probeVideoGeometry, probeKeyframes },
 ): { from: number; to: number; totalFrames: number } | null {
   const no = (why: string) => {
     log("Render", `Partial render not possible: ${why} — full render.`);
@@ -3272,7 +3276,7 @@ function planPartialRender(
     }
   }
 
-  const geo = probeVideoGeometry(outPath);
+  const geo = probes.probeVideoGeometry(outPath);
   const wantH = normalizeQuality(newProps.outHeight);
   if (!geo || geo.height !== wantH || geo.width !== qualityWidth(wantH)) return no(`previous video is not ${qualityWidth(wantH)}x${wantH}`);
   const fps = Number(newProps.fps) || CAPTURE_FPS;
@@ -3281,7 +3285,7 @@ function planPartialRender(
   const f0 = Math.max(0, introFrames + Math.round(scene.startSec * fps) - 1);
   const f1 = Math.min(total - 1, introFrames + Math.round(scene.endSec * fps) + 1);
 
-  const keys = probeKeyframes(outPath, fps);
+  const keys = probes.probeKeyframes(outPath, fps);
   if (keys.length === 0) return no("no keyframes probed");
   const from = [...keys].reverse().find((k) => k <= f0) ?? 0;
   const next = keys.find((k) => k > f1);
