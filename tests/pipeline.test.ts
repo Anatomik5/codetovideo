@@ -196,10 +196,20 @@ test("normalizeScenePatch trims texts and limits title and caption", () => {
     introLine: "   ",
     outroLine: 42,
   }, false);
-  assert.equal(patch.title, "T".repeat(40));
-  assert.equal(patch.caption, "C".repeat(68));
+  // A single over-long word has no boundary to cut at: it is shortened and marked with an ellipsis.
+  assert.equal(patch.title, `${"T".repeat(39)}…`);
+  assert.equal(patch.caption, `${"C".repeat(67)}…`);
   assert.equal(patch.introLine, undefined);
   assert.equal(patch.outroLine, undefined);
+});
+
+test("normalizeScenePatch cuts edited captions at a word boundary, like the first plan", () => {
+  const patch = normalizeScenePatch({
+    title: "Review findings and resolve every flagged item quickly",
+    caption: "AI detects errors, risks, and discrepancies across thousands of items.",
+  }, true);
+  assert.equal(patch.title, "Review findings and resolve every…");
+  assert.equal(patch.caption, "AI detects errors, risks, and discrepancies across thousands of…");
 });
 
 test("normalizeScenePatch allows reshoot only when allowed by the CLI", () => {

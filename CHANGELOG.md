@@ -8,6 +8,8 @@ All notable changes. Format loosely follows [Keep a Changelog](https://keepachan
 - Small models are more robust: malformed plan JSON is repaired and retried once; models without a thinking mode no longer fail the background step; over-long titles and captions are cut at a word boundary.
 - Export SRT and WebVTT from the desktop app or a saved session. Long captions now use shorter, proportionally timed cues in both formats (thanks Dathinel, #10).
 - Unit tests for scene planning and partial-render planning; the planner's video probes can be injected in tests (thanks TONstories, #12).
+- Unit tests for scene editing: scene lookup, edit-patch cleanup and the no-op filter (thanks avaldivieso-meraki, #17).
+- Scene edits now cut over-long titles and captions at a word boundary, like the first plan does.
 
 ## [0.2.0] - first public release
 

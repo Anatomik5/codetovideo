@@ -3483,10 +3483,12 @@ interface ScenePatch {
 export function normalizeScenePatch(raw: any, allowReshoot: boolean): ScenePatch {
   const hex = (v: any) => (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v.trim()) ? v.trim() : undefined);
   const str = (v: any, max: number) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : undefined);
+  // On-screen texts are cut at a word boundary, exactly like when the plan is first written.
+  const onScreen = (v: any, max: number) => (typeof v === "string" && v.trim() ? clipText(v, max) : undefined);
   return {
     mode: allowReshoot && raw?.mode === "reshoot" ? "reshoot" : "metadata",
-    title: str(raw?.title, 40),
-    caption: str(raw?.caption, 68),
+    title: onScreen(raw?.title, 40),
+    caption: onScreen(raw?.caption, 68),
     targetGoal: str(raw?.targetGoal, 140),
     backdropBrief: str(raw?.backdropBrief, 600),
     backdropMotif: str(raw?.backdropMotif, 20),

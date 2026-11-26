@@ -174,7 +174,7 @@ Short version: `qwen3.5:4b` or `gemma4:e2b` with `--backdrop motif` for speed an
 
 **CTV is alpha.** It works end to end, but on a very small test surface. Please read this before you invest time:
 
-- **Tested on:** Windows 11; Ollama with `qwen3.5:4b`, `gemma4:e2b` and `gemma4:e4b` (see [Which model?](#which-model)); Gemini 2.5 and 3.5 via the OpenAI-compatible API (author's own runs); one real Next.js + FastAPI app and the bundled example. The unit tests also pass on macOS (contributor run). **Not tested:** the full pipeline on macOS and Linux, other providers, most real-world apps.
+- **Tested on:** Windows 11; Ollama with `qwen3.5:4b`, `gemma4:e2b` and `gemma4:e4b` (see [Which model?](#which-model)); Gemini 2.5 and 3.5 via the OpenAI-compatible API (author's own runs); one real Next.js + FastAPI app and the bundled example. The unit tests also pass on macOS and Linux (contributor runs). **Not tested:** the full pipeline on macOS and Linux, other providers, most real-world apps.
 - **Navigation is heuristic.** Logins, multi-tab flows, drag-and-drop, canvas apps, iframes and shadow DOM will probably defeat it. It stops with a `stopReason` instead of looping, but "stops" is not "works".
 - **Small models give small results.** A 4B model writes serviceable but generic captions, sometimes splits scenes oddly, and its background drawings are often sparse (hence the motif fallback). Bigger models should do better; I have not verified how much.
 - **Web UIs only.** No native desktop apps.
@@ -182,7 +182,7 @@ Short version: `qwen3.5:4b` or `gemma4:e2b` with `--backdrop motif` for speed an
 - **Slow on CPU.** A ~75 s video at 720p takes a few minutes to render; 1080p and above take much longer.
 - **Remotion's license is not plain MIT.** Companies above a small size need a paid license. See [THIRD_PARTY.md](THIRD_PARTY.md). "Free" here means *no per-use fees*, not "no license terms anywhere".
 - **Quality bar of the output** is "decent first cut", not a replacement for a human editor.
-- **Tests:** 17 unit tests (helpers, subtitles, scene planning, partial-render planning) plus a type check (`npm run check`). No automated end-to-end tests and no hosted CI yet.
+- **Tests:** 25 unit tests (helpers, subtitles, scene planning, partial-render planning, scene editing) plus a type check (`npm run check`). No automated end-to-end tests and no hosted CI yet.
 - **No audio / narration.** Out of scope for now.
 
 If any of this bites you, [open a run report](https://github.com/Anatomik5/codetovideo/issues/new?template=run_report.yml): that is exactly the feedback the project needs.
@@ -249,6 +249,7 @@ Translations: [Русский](docs/ru/README.md) *(community-style translation,
 
 - [Dathinel](https://github.com/Dathinel): the first outside contribution, the subtitle exporter (#7) and WebVTT with readable, timed cues (#10). The desktop app's **Export subtitles** button and the per-session `final.srt` / `final.vtt` build on it.
 - [TONstories](https://github.com/TONstories): tests for scene planning and partial-render planning (#12), and the first run on macOS.
+- [avaldivieso-meraki](https://github.com/avaldivieso-meraki): tests for scene editing (#17), and the first run on Linux.
 
 ## License
 

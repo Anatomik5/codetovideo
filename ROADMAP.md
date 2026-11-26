@@ -4,7 +4,7 @@ CTV works end to end on the author's machine, with a small local model, on one r
 
 ## Weak spots (please help us find more)
 
-- 🙋 **Only tested on Windows 11.** The unit tests pass on macOS (contributor run, #12), but the full pipeline (browser, recording, rendering, desktop app) has not been run on macOS or Linux yet. Reports welcome ([#1](https://github.com/Anatomik5/codetovideo/issues/1)).
+- 🙋 **Only tested on Windows 11.** The unit tests pass on macOS and Linux (contributor runs, #12 and #17), but the full pipeline (browser, recording, rendering, desktop app) has not been run on macOS or Linux yet. Reports welcome ([#1](https://github.com/Anatomik5/codetovideo/issues/1)).
 - 🙋 **Only a handful of apps tried.** One real Next.js + FastAPI wizard and the bundled `hello-wizard`. Logins, multi-tab apps, drag-and-drop, canvas apps, iframes and shadow DOM are likely to defeat the agent. It stops with a `stopReason` instead of looping, but that is not the same as working.
 - 🙋 **Background drawings that miss the edges** are accepted in `--backdrop generate` mode ([#13](https://github.com/Anatomik5/codetovideo/issues/13)).
 - **Pacing varies a lot between models** when the prompt does not ask for one ([#16](https://github.com/Anatomik5/codetovideo/issues/16)).
@@ -21,7 +21,7 @@ CTV works end to end on the author's machine, with a small local model, on one r
 - 🙋 **More promo templates** (different camera language, vertical 9:16 and square formats for social posts).
 - 🙋 **Packaging:** electron-builder installers for Windows / macOS / Linux (unsigned is fine to start).
 - 🙋 **Docker image** that runs the pipeline headless with a local model sidecar.
-- ✅ **Unit tests for scene planning and the partial-render planner** (thanks TONstories, #12). 🙋 Still open: tests for scene-edit handling ([#14](https://github.com/Anatomik5/codetovideo/issues/14)).
+- ✅ **Unit tests for scene planning, the partial-render planner and scene editing** (thanks TONstories, #12, and avaldivieso-meraki, #17).
 - **Optional narration with a free local TTS** (opt-in, off by default, keeping the "no paid service" rule): design discussion in #9. Background music is a later question.
 - **Better scene planning from a user's own storyboard** (a Markdown outline instead of one prompt).
 - **Pluggable "format" API** so formats can live outside the core.
