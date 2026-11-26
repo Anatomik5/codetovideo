@@ -70,6 +70,10 @@ Gemma 4 E4B's **first** run crashed: the plan came back as malformed JSON and CT
 - Plan JSON is now repaired and retried once.
 - Models without a thinking mode no longer fail the background step (CTV retries without `think`).
 
+## Raw data
+
+Everything behind this report is in [`2026-11-gemma4-vs-qwen/`](2026-11-gemma4-vs-qwen/): `results.json` (timings, steps, label roles), one `*.plan.json` per model (titles, captions, pacing, palette and the full background SVG) and one `*.log` per model (timestamped pipeline log). Local paths are replaced with `<HOME>` / `<app>`, and the recorded app's own server output is removed.
+
 ## Reproduce
 
 ```bash

@@ -1,0 +1,83 @@
+{
+  "videoTitle": "AI BoQ Review: Full Cycle",
+  "introLine": "Transforming complex construction bids into actionable insights.",
+  "outroLine": "LV Scout: From Bill to Bid, flawlessly.",
+  "introSec": 1.6,
+  "outroSec": 2.2,
+  "pacing": {
+    "scrollDurationMs": 2000,
+    "scrollStepPx": 320,
+    "dwellAfterActionMs": 1400,
+    "preTrimPadSec": 0.9,
+    "postTrimPadSec": 3
+  },
+  "artDirection": {
+    "accentColor": "#00ffff",
+    "secondaryColor": "#ff00ff",
+    "bgStart": "#0a001a",
+    "bgEnd": "#1a0033",
+    "isDark": true,
+    "backdropSvg": "<svg viewBox=\"0 0 1280 720\" width=\"100%\" height=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"xMidYMid slice\">\n    <defs>\n        <filter id=\"glow\">\n            <feGaussianBlur stdDeviation=\"3\" result=\"coloredBlur\"/>\n            <feMerge>\n                <feMergeNode in=\"coloredBlur\"/>\n                <feMergeNode in=\"SourceGraphic\"/>\n            </feMerge>\n        </filter>\n    </defs>\n\n    <!-- 1. Subtle Background Geometric Framing (Full Canvas) -->\n    <g opacity=\"0.1\">\n        <!-- Primary Grid Lines -->\n        <line x1=\"100\" y1=\"0\" x2=\"100\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n        <line x1=\"250\" y1=\"0\" x2=\"250\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n        <line x1=\"400\" y1=\"0\" x2=\"400\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n        <line x1=\"550\" y1=\"0\" x2=\"550\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n        <line x1=\"700\" y1=\"0\" x2=\"700\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n        <line x1=\"850\" y1=\"0\" x2=\"850\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n        <line x1=\"1000\" y1=\"0\" x2=\"1000\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n        <line x1=\"1150\" y1=\"0\" x2=\"1150\" y2=\"720\" stroke=\"#00ffff\" stroke-width=\"1\"/>\n\n        <!-- Secondary Grid Lines -->\n        <line x1=\"0\" y1=\"150\" x2=\"1280\" y2=\"150\" stroke=\"#ff00ff\" stroke-width=\"1\"/>\n        <line x1=\"0\" y1=\"300\" x2=\"1280\" y2=\"300\" stroke=\"#ff00ff\" stroke-width=\"1\"/>\n        <line x1=\"0\" y1=\"450\" x2=\"1280\" y2=\"450\" stroke=\"#ff00ff\" stroke-width=\"1\"/>\n        <line x1=\"0\" y1=\"600\" x2=\"1280\" y2=\"600\" stroke=\"#ff00ff\" stroke-width=\"1\"/>\n    </g>\n\n    <!-- 2. City Silhouettes (Peripheral Zones) -->\n    <g stroke=\"#00ffff\" stroke-width=\"2\" fill=\"none\" filter=\"url(#glow)\">\n        <!-- Top Skyline (Left to Right) -->\n        <polygon points=\"15,92 1265,92 1280,12 15,12\" />\n        <polygon points=\"15,92 100,50 200,92\" />\n        <polygon points=\"250,92 350,30 450,92\" />\n        <polygon points=\"500,92 600,60 700,92\" />\n        <polygon points=\"750,92 850,40 950,92\" />\n        <polygon points=\"1000,92 1100,70 1265,92\" />\n\n        <!-- Left Margin Towers -->\n        <rect x=\"15\" y=\"40\" width=\"15\" height=\"660\" rx=\"3\" ry=\"3\" stroke=\"#ff00ff\" stroke-width=\"1.5\" fill=\"none\"/>\n        <rect x=\"15\" y=\"100\" width=\"15\" height=\"500\" rx=\"3\" ry=\"3\" stroke=\"#00ffff\" stroke-width=\"2\" fill=\"none\"/>\n\n        <!-- Right Margin Towers -->\n        <rect x=\"1265\" y=\"40\" width=\"15\" height=\"660\" rx=\"3\" ry=\"3\" stroke=\"#00ffff\" stroke-width=\"2\" fill=\"none\"/>\n        <rect x=\"1265\" y=\"100\" width=\"15\" height=\"500\" rx=\"3\" ry=\"3\" stroke=\"#ff00ff\" stroke-width=\"1.5\" fill=\"none\"/>\n    </g>\n\n    <!-- 3. LV Scout Cycle Flow (Nodes and Connections) -->\n    <g stroke=\"#00ffff\" stroke-width=\"3\" fill-opacity=\"0.25\" filter=\"url(#glow)\">\n        <!-- Node 1: Import BOQ (Data Ingestion) -->\n        <rect x=\"50\" y=\"150\" width=\"40\" height=\"40\" rx=\"5\" fill=\"#00ffff\" opacity=\"0.25\"/>\n        <circle cx=\"70\" cy=\"170\" r=\"5\" fill=\"#00ffff\" opacity=\"0.5\"/>\n\n        <!-- Node 2: Review Findings (Analysis) -->\n        <rect x=\"50\" y=\"280\" width=\"40\" height=\"40\" rx=\"5\" fill=\"#ff00ff\" opacity=\"0.25\"/>\n        <path d=\"M 60 300 L 75 315 L 60 330 Z\" fill=\"#ff00ff\" opacity=\"0.5\"/>\n\n        <!-- Node 3: Evaluate Prices (Comparison) -->\n        <rect x=\"50\" y=\"410\" width=\"40\" height=\"40\" rx=\"5\" fill=\"#00ffff\" opacity=\"0.25\"/>\n        <line x1=\"60\" y1=\"420\" x2=\"80\" y2=\"420\" stroke=\"#00ffff\" stroke-width=\"2\"/>\n        <line x1=\"60\" y1=\"440\" x2=\"80\" y2=\"440\" stroke=\"#00ffff\" stroke-width=\"2\"/>\n\n        <!-- Node 4: Set Margin (Adjustment) -->\n        <rect x=\"50\" y=\"540\" width=\"40\" height=\"40\" rx=\"5\" fill=\"#ff00ff\" opacity=\"0.25\"/>\n        <circle cx=\"70\" cy=\"560\" r=\"15\" stroke=\"#ff00ff\" stroke-width=\"2\" fill=\"none\"/>\n        <line x1=\"70\" y1=\"545\" x2=\"70\" y2=\"575\" stroke=\"#ff00ff\" stroke-width=\"1.5\"/>\n\n        <!-- Node 5: Export (Output/Transmission) -->\n        <rect x=\"50\" y=\"670\" width=\"40\" height=\"40\" rx=\"5\" fill=\"#00ffff\" opacity=\"0.25\"/>\n        <path d=\"M 60 690 L 90 690 L 90 710 L 60 710 Z\" fill=\"#00ffff\" opacity=\"0.5\"/>\n    </g>\n\n    <!-- 4. Circuit Data Streams (Connecting the Nodes) -->\n    <g stroke=\"#00ffff\" stroke-width=\"2.5\" fill=\"none\" filter=\"url(#glow)\">\n        <!-- Flow 1 -> 2 -->\n        <path d=\"M 90 170 C 250 100, 450 100, 450 280\" stroke-dasharray=\"10 5\" />\n\n        <!-- Flow 2 -> 3 -->\n        <path d=\"M 450 310 C 600 350, 800 350, 800 410\" stroke-dasharray=\"10 5\" />\n\n        <!-- Flow 3 -> 4 -->\n        <path d=\"M 800 420 C 1000 480, 1100 480, 1100 540\" stroke-dasharray=\"10 5\" />\n\n        <!-- Flow 4 -> 5 -->\n        <path d=\"M 1100 560 C 1200 620, 100 620, 100 670\" stroke-dasharray=\"10 5\" />\n    </g>\n\n    <!-- 5. Secondary Data Stream / Energy Field (Across the center) -->\n    <g stroke=\"#ff00ff\" stroke-width=\"1.5\" fill=\"none\" opacity=\"0.5\">\n        <!-- Diagonal energy lines -->\n        <line x1=\"0\" y1=\"0\" x2=\"1280\" y2=\"720\" stroke-width=\"1\"/>\n        <line x1=\"1280\" y1=\"0\" x2=\"0\" y2=\"720\" stroke-width=\"1\"/>\n        <line x1=\"150\" y1=\"720\" x2=\"1130\" y2=\"0\" stroke-width=\"1\"/>\n        <line x1=\"150\" y1=\"0\" x2=\"1130\" y2=\"720\" stroke-width=\"1\"/>\n    </g>\n\n</svg>",
+    "backdropImage": ""
+  },
+  "format": "demo",
+  "quality": 720,
+  "backdropMode": "generate",
+  "llm": {
+    "model": "gemma4:e4b"
+  },
+  "scenes": [
+    {
+      "id": "beat_1",
+      "title": "Import BOQ",
+      "caption": "Upload your Bill of Quantities and start the analysis.",
+      "targetGoal": "web/app/page.tsx (LvUpload)",
+      "requiredActions": [
+        "upload",
+        "click"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_2",
+      "title": "Review Findings",
+      "caption": "AI reviews items, flags risks, and identifies critical errors.",
+      "targetGoal": "web/app/schritte/page.tsx (Schritte)",
+      "requiredActions": [
+        "click"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_3",
+      "title": "Evaluate Prices",
+      "caption": "Estimate unit prices with source data and ranges.",
+      "targetGoal": "Pricing evaluation step within the report flow",
+      "requiredActions": [
+        "click"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_4",
+      "title": "Set Margin",
+      "caption": "Compare against competitors and set your optimal margin.",
+      "targetGoal": "web/app/marge/page.tsx (Marge)",
+      "requiredActions": [
+        "upload",
+        "click"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_5",
+      "title": "Export Bid",
+      "caption": "Finalize the offer and export the complete review report.",
+      "targetGoal": "web/app/export/page.tsx (Export)",
+      "requiredActions": [
+        "scroll"
+      ],
+      "durationSec": 0
+    }
+  ]
+}

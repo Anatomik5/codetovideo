@@ -1,0 +1,93 @@
+{
+  "videoTitle": "LV Scout: BoQ to Bid",
+  "introLine": "Stop losing money on construction bids. LV Scout automates the entire review and pricing cycle.",
+  "outroLine": "From raw data to final offer—master your construction bidding with LV Scout.",
+  "introSec": 1.6,
+  "outroSec": 2.2,
+  "pacing": {
+    "scrollDurationMs": 850,
+    "scrollStepPx": 440,
+    "dwellAfterActionMs": 650,
+    "preTrimPadSec": 0.85,
+    "postTrimPadSec": 2
+  },
+  "artDirection": {
+    "accentColor": "#00ffff",
+    "secondaryColor": "#ff00ff",
+    "bgStart": "#0a0a1a",
+    "bgEnd": "#1a0a2a",
+    "isDark": true,
+    "backdropSvg": "<svg viewBox=\"0 0 1280 720\" width=\"100%\" height=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"xMidYMid slice\">\n    <defs>\n        <!-- Define Neon Glow Effect -->\n        <filter id=\"neonGlow\">\n            <feGaussianBlur stdDeviation=\"1.5\" result=\"blur\"/>\n            <feMerge>\n                <feMergeNode in=\"blur\"/>\n                <feMergeNode in=\"SourceGraphic\"/>\n            </feMerge>\n        </filter>\n        <!-- Background Grid Pattern (Subtle) -->\n        <pattern id=\"grid\" width=\"80\" height=\"80\" patternUnits=\"userSpaceOnUse\">\n            <path d=\"M 80 0 L 0 0 0 80\" stroke=\"#00ffff\" stroke-width=\"0.5\" opacity=\"0.05\"/>\n        </pattern>\n    </defs>\n\n    <!-- 1. Dark Cyber City Silhouette Background -->\n    <rect width=\"1280\" height=\"720\" fill=\"#0a0a1a\"/>\n\n    <!-- Background Skyscrapers (Silhouettes) -->\n    <g opacity=\"0.4\">\n        <!-- Left Cluster -->\n        <polygon points=\"100,100 250,100 250,400 100,400\" fill=\"#1a1a3a\"/>\n        <polygon points=\"350,150 500,150 500,350 350,350\" fill=\"#1a1a3a\"/>\n        <!-- Right Cluster -->\n        <polygon points=\"1000,200 1150,200 1150,450 1000,450\" fill=\"#1a1a3a\"/>\n        <polygon points=\"900,300 1050,300 1050,500 900,500\" fill=\"#1a1a3a\"/>\n    </g>\n\n    <!-- 2. Primary Circuit Lines & Data Streams (Foreground Detail) -->\n    \n    <!-- Main Flow Line (Represents the Cycle Start/End) -->\n    <path d=\"M 150 360 C 400 100, 800 500, 1130 360\" stroke=\"#00ffff\" stroke-width=\"4\" filter=\"url(#neonGlow)\" opacity=\"0.8\"/>\n\n    <!-- Secondary Circuit Traces -->\n    <line x1=\"150\" y1=\"50\" x2=\"1130\" y2=\"670\" stroke=\"#ff00ff\" stroke-width=\"2\" opacity=\"0.6\"/>\n    <line x1=\"150\" y1=\"670\" x2=\"1130\" y2=\"50\" stroke=\"#ff00ff\" stroke-width=\"2\" opacity=\"0.6\"/>\n\n    <!-- Abstract Data Streams (Glowing Paths) -->\n    <path d=\"M 200 100 Q 400 200, 600 150\" stroke=\"#00ffff\" stroke-width=\"1.5\" fill=\"none\" opacity=\"0.2\"/>\n    <path d=\"M 800 600 Q 1000 550, 1100 650\" stroke=\"#ff00ff\" stroke-width=\"1.5\" fill=\"none\" opacity=\"0.2\"/>\n    <path d=\"M 450 300 L 650 350 L 650 450 L 450 400 Z\" stroke=\"#00ffff\" stroke-width=\"1\" fill=\"none\" opacity=\"0.15\"/>\n\n\n    <!-- 3. Cycle Representation (Abstract Nodes/Process Markers) -->\n    \n    <!-- Node 1: Bill of Quantities (BOQ) -->\n    <circle cx=\"300\" cy=\"350\" r=\"25\" fill=\"#00ffff\" stroke=\"#00ffff\" stroke-width=\"3\" filter=\"url(#neonGlow)\"/>\n    <circle cx=\"300\" cy=\"350\" r=\"15\" fill=\"#ff00ff\" opacity=\"0.5\"/>\n\n    <!-- Node 2: Review Findings -->\n    <circle cx=\"600\" cy=\"250\" r=\"20\" fill=\"#00ffff\" stroke=\"#00ffff\" stroke-width=\"3\" filter=\"url(#neonGlow)\"/>\n    <circle cx=\"600\" cy=\"250\" r=\"10\" fill=\"#ff00ff\" opacity=\"0.5\"/>\n\n    <!-- Node 3: Evaluate Prices -->\n    <circle cx=\"850\" cy=\"450\" r=\"25\" fill=\"#00ffff\" stroke=\"#00ffff\" stroke-width=\"3\" filter=\"url(#neonGlow)\"/>\n    <circle cx=\"850\" cy=\"450\" r=\"15\" fill=\"#ff00ff\" opacity=\"0.5\"/>\n\n    <!-- Node 4: Set Margin -->\n    <circle cx=\"1050\" cy=\"300\" r=\"20\" fill=\"#00ffff\" stroke=\"#00ffff\" stroke-width=\"3\" filter=\"url(#neonGlow)\"/>\n    <circle cx=\"1050\" cy=\"300\" r=\"10\" fill=\"#ff00ff\" opacity=\"0.5\"/>\n\n    <!-- Node 5: Export (Connecting back to start) -->\n    <circle cx=\"1130\" cy=\"360\" r=\"25\" fill=\"#00ffff\" stroke=\"#00ffff\" stroke-width=\"3\" filter=\"url(#neonGlow)\"/>\n    <circle cx=\"1130\" cy=\"360\" r=\"15\" fill=\"#ff00ff\" opacity=\"0.5\"/>\n\n    <!-- 4. Peripheral Framing Elements (Top Skyline & Left Margin Detail) -->\n    \n    <!-- Top Skyline Accent (Left Side) -->\n    <rect x=\"15\" y=\"12\" width=\"130\" height=\"80\" fill=\"none\" stroke=\"#00ffff\" stroke-width=\"1\" opacity=\"0.1\"/>\n    <line x1=\"15\" y1=\"12\" x2=\"145\" y2=\"12\" stroke=\"#ff00ff\" stroke-width=\"1\" opacity=\"0.1\"/>\n\n    <!-- Left Margin Circuit Detail -->\n    <path d=\"M 15 40 H 145\" stroke=\"#00ffff\" stroke-width=\"2\" opacity=\"0.2\"/>\n    <line x1=\"15\" y1=\"40\" x2=\"145\" y2=\"40\" stroke=\"#ff00ff\" stroke-width=\"1\" opacity=\"0.2\"/>\n\n    <!-- Subtle Background Geometric Framing (Full Canvas Opacity) -->\n    <rect x=\"0\" y=\"0\" width=\"1280\" height=\"720\" fill=\"url(#grid)\" opacity=\"0.08\"/>\n\n</svg>",
+    "backdropImage": ""
+  },
+  "format": "demo",
+  "quality": 720,
+  "backdropMode": "generate",
+  "llm": {
+    "model": "gemma4:e2b"
+  },
+  "scenes": [
+    {
+      "id": "beat_1",
+      "title": "Upload BOQ",
+      "caption": "Upload your Bill of Quantities (Excel, PDF, JSON) instantly.",
+      "targetGoal": "Show the 'Upload files' screen and the file selection process.",
+      "requiredActions": [
+        "upload"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_2",
+      "title": "Review Findings",
+      "caption": "AI detects errors, risks, and discrepancies across thousands of item",
+      "targetGoal": "Show the review progress screen and the list of detected findings.",
+      "requiredActions": [
+        "click"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_3",
+      "title": "Resolve Errors",
+      "caption": "Review specific findings, confirm or dismiss errors with clear evide",
+      "targetGoal": "Show the detailed findings list and the ability to mark items as Confirmed/Dismissed.",
+      "requiredActions": [
+        "click"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_4",
+      "title": "Evaluate Price",
+      "caption": "Estimate unit prices based on historical data and market indices.",
+      "targetGoal": "Show the price evaluation report with estimated ranges and sources.",
+      "requiredActions": [
+        "click",
+        "upload"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_5",
+      "title": "Set Margin",
+      "caption": "Analyze competitor bids and set your optimal profit margin with a sl",
+      "targetGoal": "Show the margin comparison view and the slider interface.",
+      "requiredActions": [
+        "click",
+        "scroll"
+      ],
+      "durationSec": 0
+    },
+    {
+      "id": "beat_6",
+      "title": "Export Final Offer",
+      "caption": "Generate and export your final, optimized bid report as PDF or Excel",
+      "targetGoal": "Show the final export screen.",
+      "requiredActions": [
+        "scroll"
+      ],
+      "durationSec": 0
+    }
+  ]
+}

@@ -1,0 +1,492 @@
+[
+  {
+    "model": "qwen3.5:4b",
+    "seconds": {
+      "total": 225.2,
+      "planLLM": 24.7,
+      "backdrop": 94.8,
+      "recording": 61.8,
+      "classifyLabels": 0
+    },
+    "backdrop": {
+      "outcome": "no usable drawing, motif fallback",
+      "svgChars": 20609,
+      "palette": [
+        "#00ffff",
+        "#ff00ff",
+        "#1a0b2e",
+        "#0d0514"
+      ]
+    },
+    "plan": {
+      "videoTitle": "LV Scout Full Cycle",
+      "introLine": "From bill to bid in six steps",
+      "outroLine": "Find errors, set margins, export",
+      "pacing": {
+        "scrollDurationMs": 2400,
+        "scrollStepPx": 320,
+        "dwellAfterActionMs": 1500,
+        "preTrimPadSec": 1.2,
+        "postTrimPadSec": 3.5
+      },
+      "scenes": [
+        {
+          "title": "Upload Bill",
+          "caption": "Import LV as GAEB, Excel, PDF or JSON",
+          "sec": 0
+        },
+        {
+          "title": "Review Runs",
+          "caption": "AI detects items and finds errors",
+          "sec": 0
+        },
+        {
+          "title": "Resolve Findings",
+          "caption": "Score 7.7/10 with error details",
+          "sec": 0
+        },
+        {
+          "title": "Evaluate Price",
+          "caption": "Unit price estimates with ranges",
+          "sec": 0
+        },
+        {
+          "title": "Set Margin",
+          "caption": "Competitor comparison slider",
+          "sec": 0
+        },
+        {
+          "title": "Export Offer",
+          "caption": "Final bid ready to download",
+          "sec": 0
+        }
+      ],
+      "nonAsciiChars": 0
+    },
+    "navigation": {
+      "steps": [
+        {
+          "n": 1,
+          "action": "upload",
+          "label": "File upload input",
+          "via": "rules",
+          "t": 161.1
+        },
+        {
+          "n": 2,
+          "action": "click",
+          "label": "Evaluate",
+          "via": "rules",
+          "t": 164.1
+        },
+        {
+          "n": 3,
+          "action": "click",
+          "label": "Continue to findings",
+          "via": "rules",
+          "t": 168
+        },
+        {
+          "n": 4,
+          "action": "click",
+          "label": "Mark as done",
+          "via": "rules",
+          "t": 173.9
+        },
+        {
+          "n": 5,
+          "action": "click",
+          "label": "Evaluate price",
+          "via": "rules",
+          "t": 181.7
+        },
+        {
+          "n": 6,
+          "action": "click",
+          "label": "Continue to margin",
+          "via": "rules",
+          "t": 187.5
+        },
+        {
+          "n": 7,
+          "action": "upload",
+          "label": "File upload input",
+          "via": "rules",
+          "t": 192.3
+        },
+        {
+          "n": 8,
+          "action": "click",
+          "label": "Continue to export",
+          "via": "rules",
+          "t": 194.6
+        },
+        {
+          "n": 9,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 202.9
+        },
+        {
+          "n": 10,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 206.5
+        },
+        {
+          "n": 11,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 210.1
+        },
+        {
+          "n": 12,
+          "action": "done",
+          "label": "Workflow complete",
+          "via": "rules",
+          "t": 213.8
+        }
+      ],
+      "stopReason": null,
+      "completed": true
+    },
+    "roles": [
+      "Menu=auxiliary, LV Scout=auxiliary, ☀ ☾ A Theme Theme: Auto=auxiliary, 1 Upload BoQ=forward, Choose from vault=forward, Strict=auxiliary, How Strict is calculated=auxiliary, Graduated=auxiliary, How Graduated is calculated=auxiliary, Share=forward, How Share is calculated=auxiliary, Errors/hints=auxiliary",
+      "How Errors vs. hints is calc=auxiliary, Balanced=auxiliary, How Balanced is calculated=auxiliary",
+      "→ Sign in Guest Sign in=forward, × Remove=?, Evaluate=forward",
+      "Last evaluation Back to the =?, Upload BoQ=forward, 2 Review=forward, 3 Resolve findings=forward, 4 Evaluate price=forward, 5 Set margin=forward, 6 Final price & export=forward, Back=secondary, Continue to findings=forward"
+    ],
+    "errors": []
+  },
+  {
+    "model": "gemma4:e2b",
+    "seconds": {
+      "total": 121.2,
+      "planLLM": 14.1,
+      "backdrop": 24.7,
+      "recording": 44.7,
+      "classifyLabels": 0
+    },
+    "backdrop": {
+      "outcome": "model drawing kept",
+      "svgChars": 4023,
+      "palette": [
+        "#00ffff",
+        "#ff00ff",
+        "#0a0a1a",
+        "#1a0a2a"
+      ]
+    },
+    "plan": {
+      "videoTitle": "LV Scout: BoQ to Bid",
+      "introLine": "Stop losing money on construction bids. LV Scout automates the entire review and pricing cycle.",
+      "outroLine": "From raw data to final offer—master your construction bidding with LV Scout.",
+      "pacing": {
+        "scrollDurationMs": 850,
+        "scrollStepPx": 440,
+        "dwellAfterActionMs": 650,
+        "preTrimPadSec": 0.85,
+        "postTrimPadSec": 2
+      },
+      "scenes": [
+        {
+          "title": "Upload BOQ",
+          "caption": "Upload your Bill of Quantities (Excel, PDF, JSON) instantly.",
+          "sec": 0
+        },
+        {
+          "title": "Review Findings",
+          "caption": "AI detects errors, risks, and discrepancies across thousands of item",
+          "sec": 0
+        },
+        {
+          "title": "Resolve Errors",
+          "caption": "Review specific findings, confirm or dismiss errors with clear evide",
+          "sec": 0
+        },
+        {
+          "title": "Evaluate Price",
+          "caption": "Estimate unit prices based on historical data and market indices.",
+          "sec": 0
+        },
+        {
+          "title": "Set Margin",
+          "caption": "Analyze competitor bids and set your optimal profit margin with a sl",
+          "sec": 0
+        },
+        {
+          "title": "Export Final Offer",
+          "caption": "Generate and export your final, optimized bid report as PDF or Excel",
+          "sec": 0
+        }
+      ],
+      "nonAsciiChars": 1
+    },
+    "navigation": {
+      "steps": [
+        {
+          "n": 1,
+          "action": "upload",
+          "label": "File upload input",
+          "via": "rules",
+          "t": 73.5
+        },
+        {
+          "n": 2,
+          "action": "click",
+          "label": "Evaluate",
+          "via": "rules",
+          "t": 75.6
+        },
+        {
+          "n": 3,
+          "action": "click",
+          "label": "Continue to findings",
+          "via": "rules",
+          "t": 78.2
+        },
+        {
+          "n": 4,
+          "action": "click",
+          "label": "Mark as done",
+          "via": "rules",
+          "t": 84.7
+        },
+        {
+          "n": 5,
+          "action": "click",
+          "label": "Evaluate price",
+          "via": "rules",
+          "t": 94.5
+        },
+        {
+          "n": 6,
+          "action": "click",
+          "label": "Continue to margin",
+          "via": "rules",
+          "t": 100.3
+        },
+        {
+          "n": 7,
+          "action": "upload",
+          "label": "File upload input",
+          "via": "rules",
+          "t": 102.7
+        },
+        {
+          "n": 8,
+          "action": "click",
+          "label": "Continue to export",
+          "via": "rules",
+          "t": 104.2
+        },
+        {
+          "n": 9,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 107.9
+        },
+        {
+          "n": 10,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 109.3
+        },
+        {
+          "n": 11,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 110.7
+        },
+        {
+          "n": 12,
+          "action": "done",
+          "label": "Workflow complete",
+          "via": "rules",
+          "t": 112.1
+        }
+      ],
+      "stopReason": null,
+      "completed": true
+    },
+    "roles": [
+      "Menu=auxiliary, LV Scout=forward, → Sign in Guest Sign in=forward, ☀ ☾ A Theme Theme: Auto=auxiliary, 1 Upload BoQ=forward, Choose from vault=forward, Strict=auxiliary, How Strict is calculated=auxiliary, Graduated=auxiliary, How Graduated is calculated=auxiliary, Share=forward, How Share is calculated=auxiliary",
+      "Errors/hints=auxiliary, How Errors vs. hints is calc=auxiliary, Balanced=auxiliary, How Balanced is calculated=auxiliary",
+      "× Remove=secondary, Evaluate=forward",
+      "Last evaluation Back to the =secondary, Upload BoQ=forward, 2 Review=forward, 3 Resolve findings=forward, 4 Evaluate price=forward, 5 Set margin=forward, 6 Final price & export=forward, Back=secondary, Continue to findings=forward",
+      "Review=forward, Review again=forward, Load another file=forward, Export report=forward, Was €1.5k total in the bill =auxiliary, Why this score=auxiliary, Estimated €12.8k €8.8k – €17=auxiliary, Issues 3=forward, Warnings 3=forward, Recommendations 5=forward, All=auxiliary, High=auxiliary",
+      "Recommendation Correct 1 pri=?, Recommendation Fix 1 price e=?, Recommendation Add a 21 % bu=?, Recommendation Add a 21 % bu=?, Recommendation Add a 20 % bu=?, Evaluate price=forward",
+      "Was €1.5k total in the bill =auxiliary, Estimated €12.8k €8.8k – €17=auxiliary, Medium=auxiliary, Low=auxiliary, + +=auxiliary, Overview=forward, Findings 6=forward, Items 6=forward, Prices=forward, Bidder questions=forward, Quantities=forward, Title structure=auxiliary",
+      "Filter findings=auxiliary, Mark as done=forward, Recommendation Correct 1 pri=forward, Recommendation Fix 1 price e=forward, Recommendation Add a 21 % bu=forward, Recommendation Add a 21 % bu=forward, Recommendation Add a 20 % bu=forward",
+      "Was €1.5k total in the bill =forward, Estimated €12.8k €8.8k – €17=auxiliary, Recommendation Correct 1 pri=auxiliary",
+      "Was €1.5k total in the bill =forward, Estimated €12.8k €8.8k – €17=auxiliary, Recommendation Correct 1 pri=auxiliary"
+    ],
+    "errors": []
+  },
+  {
+    "model": "gemma4:e4b",
+    "seconds": {
+      "total": 167,
+      "planLLM": 24.5,
+      "backdrop": 49.9,
+      "recording": 68.4,
+      "classifyLabels": 4.9
+    },
+    "backdrop": {
+      "outcome": "model drawing kept",
+      "svgChars": 5145,
+      "palette": [
+        "#00ffff",
+        "#ff00ff",
+        "#0a001a",
+        "#1a0033"
+      ]
+    },
+    "plan": {
+      "videoTitle": "AI BoQ Review: Full Cycle",
+      "introLine": "Transforming complex construction bids into actionable insights.",
+      "outroLine": "LV Scout: From Bill to Bid, flawlessly.",
+      "pacing": {
+        "scrollDurationMs": 2000,
+        "scrollStepPx": 320,
+        "dwellAfterActionMs": 1400,
+        "preTrimPadSec": 0.9,
+        "postTrimPadSec": 3
+      },
+      "scenes": [
+        {
+          "title": "Import BOQ",
+          "caption": "Upload your Bill of Quantities and start the analysis.",
+          "sec": 0
+        },
+        {
+          "title": "Review Findings",
+          "caption": "AI reviews items, flags risks, and identifies critical errors.",
+          "sec": 0
+        },
+        {
+          "title": "Evaluate Prices",
+          "caption": "Estimate unit prices with source data and ranges.",
+          "sec": 0
+        },
+        {
+          "title": "Set Margin",
+          "caption": "Compare against competitors and set your optimal margin.",
+          "sec": 0
+        },
+        {
+          "title": "Export Bid",
+          "caption": "Finalize the offer and export the complete review report.",
+          "sec": 0
+        }
+      ],
+      "nonAsciiChars": 0
+    },
+    "navigation": {
+      "steps": [
+        {
+          "n": 1,
+          "action": "upload",
+          "label": "File upload input",
+          "via": "rules",
+          "t": 94.1
+        },
+        {
+          "n": 2,
+          "action": "click",
+          "label": "Evaluate",
+          "via": "rules",
+          "t": 96.9
+        },
+        {
+          "n": 3,
+          "action": "click",
+          "label": "Continue to findings",
+          "via": "rules",
+          "t": 100.7
+        },
+        {
+          "n": 4,
+          "action": "click",
+          "label": "Mark as done",
+          "via": "rules",
+          "t": 110.9
+        },
+        {
+          "n": 5,
+          "action": "click",
+          "label": "Evaluate price",
+          "via": "rules",
+          "t": 118.2
+        },
+        {
+          "n": 6,
+          "action": "click",
+          "label": "Continue to margin",
+          "via": "rules",
+          "t": 123.5
+        },
+        {
+          "n": 7,
+          "action": "upload",
+          "label": "File upload input",
+          "via": "rules",
+          "t": 127.8
+        },
+        {
+          "n": 8,
+          "action": "click",
+          "label": "Continue to export",
+          "via": "rules",
+          "t": 130.1
+        },
+        {
+          "n": 9,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 137.4
+        },
+        {
+          "n": 10,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 140.5
+        },
+        {
+          "n": 11,
+          "action": "scroll",
+          "label": "Scroll down to inspect content",
+          "via": "rules",
+          "t": 143.7
+        },
+        {
+          "n": 12,
+          "action": "done",
+          "label": "Workflow complete",
+          "via": "rules",
+          "t": 146.8
+        }
+      ],
+      "stopReason": null,
+      "completed": true
+    },
+    "roles": [
+      "Menu=auxiliary, LV Scout=auxiliary, → Sign in Guest Sign in=forward, ☀ ☾ A Theme Theme: Auto=auxiliary, 1 Upload BoQ=forward, Choose from vault=forward, Strict=auxiliary, How Strict is calculated=auxiliary, Graduated=auxiliary, How Graduated is calculated=auxiliary, Share=forward, How Share is calculated=auxiliary",
+      "Errors/hints=auxiliary, How Errors vs. hints is calc=auxiliary, Balanced=auxiliary, How Balanced is calculated=auxiliary",
+      "× Remove=secondary, Evaluate=forward",
+      "Last evaluation Back to the =?, Upload BoQ=forward, 2 Review=forward, 3 Resolve findings=forward, 4 Evaluate price=forward, 5 Set margin=forward, 6 Final price & export=forward, Back=secondary, Continue to findings=forward",
+      "Review=auxiliary, Review again=secondary, Load another file=secondary, Export report=forward, Was €1.5k total in the bill =auxiliary, Why this score=auxiliary, Estimated €12.8k €8.8k – €17=auxiliary, Issues 3=auxiliary, Warnings 3=auxiliary, Recommendations 5=auxiliary, All=auxiliary, High=auxiliary",
+      "Medium=auxiliary, Low=auxiliary, + +=auxiliary, Overview=auxiliary, Findings 6=auxiliary, Items 6=auxiliary, Prices=auxiliary, Bidder questions=auxiliary, Quantities=auxiliary, Title structure=auxiliary, Filter findings=auxiliary, Mark as done=forward",
+      "Recommendation Correct 1 pri=auxiliary, Recommendation Fix 1 price e=auxiliary, Recommendation Add a 21 % bu=auxiliary, Recommendation Add a 21 % bu=auxiliary, Recommendation Add a 20 % bu=auxiliary, Evaluate price=forward"
+    ],
+    "errors": []
+  }
+]
