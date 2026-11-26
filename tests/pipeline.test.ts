@@ -16,6 +16,9 @@ import {
   clipText,
   planScenes,
   planPartialRender,
+  findScene,
+  normalizeScenePatch,
+  dropNoOpEditFields,
 } from "../scripts/demo-pipeline";
 
 test("tokenizeCommand honours quotes", () => {
@@ -151,4 +154,113 @@ test("planPartialRender falls back for edits outside the scene or unusable previ
   assert.equal(plan({ ...editedProps, durationInFrames: 90 }), null);
   assert.equal(plan(editedProps, { ...probes, probeVideoGeometry: () => ({ width: 640, height: 720 }) }), null);
   assert.equal(plan(editedProps, { ...probes, probeKeyframes: () => [] }), null);
+});
+
+const editScenes = ["beat_1", "beat_2", "beat_3"].map((id, index) => ({
+  id, index, title: id, caption: id, targetGoal: id,
+}));
+const editManifest = () => ({ scenes: editScenes } as any);
+
+test("findScene resolves an exact id and a trailing 1-based number", () => {
+  assert.equal(findScene(editManifest(), "beat_3"), editScenes[2]);
+  assert.equal(findScene(editManifest(), "2"), editScenes[1]);
+  assert.equal(findScene(editManifest(), " Scene 3 "), editScenes[2]);
+  assert.equal(findScene(editManifest(), 1 as any), editScenes[0]);
+});
+
+test("findScene reports the available scenes when a reference cannot be resolved", () => {
+  assert.throws(
+    () => findScene(editManifest(), "beat_9"),
+    /Scene "beat_9" not found\. Available: 1=beat_1, 2=beat_2, 3=beat_3/,
+  );
+  assert.throws(() => findScene(editManifest(), "9"), /not found/);
+});
+
+test("normalizeScenePatch keeps only trimmed #rrggbb colours", () => {
+  const patch = normalizeScenePatch({
+    accentColor: " #A1b2C3 ",
+    secondaryColor: "blue",
+    bgStart: "#fff",
+    bgEnd: "#12345g",
+  }, true);
+  assert.equal(patch.accentColor, "#A1b2C3");
+  assert.equal(patch.secondaryColor, undefined);
+  assert.equal(patch.bgStart, undefined);
+  assert.equal(patch.bgEnd, undefined);
+});
+
+test("normalizeScenePatch trims texts and limits title and caption", () => {
+  const patch = normalizeScenePatch({
+    title: `  ${"T".repeat(60)}  `,
+    caption: `  ${"C".repeat(80)}  `,
+    introLine: "   ",
+    outroLine: 42,
+  }, false);
+  assert.equal(patch.title, "T".repeat(40));
+  assert.equal(patch.caption, "C".repeat(68));
+  assert.equal(patch.introLine, undefined);
+  assert.equal(patch.outroLine, undefined);
+});
+
+test("normalizeScenePatch allows reshoot only when allowed by the CLI", () => {
+  assert.equal(normalizeScenePatch({ mode: "reshoot" }, true).mode, "reshoot");
+  assert.equal(normalizeScenePatch({ mode: "reshoot" }, false).mode, "metadata");
+  assert.equal(normalizeScenePatch({ mode: "metadata" }, true).mode, "metadata");
+  assert.equal(normalizeScenePatch({}, true).mode, "metadata");
+});
+
+const currentEdit = {
+  artDirection: {
+    accentColor: "#112233",
+    secondaryColor: "#aabbcc",
+    bgStart: "#000000",
+    bgEnd: "#ffffff",
+  },
+  videoTitle: "Product Demo",
+  introLine: "Meet the product",
+  outroLine: "Try it today",
+};
+
+test("dropNoOpEditFields clears echoed values and keeps real changes without mutating the patch", () => {
+  const patch = {
+    mode: "metadata" as const,
+    title: "New badge",
+    accentColor: "#112233",
+    secondaryColor: "#AABBCC",
+    bgStart: "#123456",
+    videoTitle: "Product Demo",
+    introLine: "A different intro",
+  };
+  const cleaned = dropNoOpEditFields(patch, currentEdit);
+  assert.equal(cleaned.mode, "metadata");
+  assert.equal(cleaned.title, "New badge");
+  assert.equal(cleaned.accentColor, undefined);
+  assert.equal(cleaned.secondaryColor, undefined);
+  assert.equal(cleaned.bgStart, "#123456");
+  assert.equal(cleaned.bgEnd, undefined);
+  assert.equal(cleaned.videoTitle, undefined);
+  assert.equal(cleaned.introLine, "A different intro");
+  assert.equal(cleaned.outroLine, undefined);
+  assert.equal(patch.accentColor, "#112233");
+  assert.equal(patch.secondaryColor, "#AABBCC");
+});
+
+test("dropNoOpEditFields drops an echo of every global field so it cannot trigger a re-render", () => {
+  const echoed = normalizeScenePatch({
+    mode: "metadata",
+    title: "Old badge",
+    caption: "Old caption",
+    accentColor: "#112233",
+    secondaryColor: "#aabbcc",
+    bgStart: "#000000",
+    bgEnd: "#ffffff",
+    videoTitle: "Product Demo",
+    introLine: "Meet the product",
+    outroLine: "Try it today",
+  }, true);
+  const cleaned = dropNoOpEditFields(echoed, currentEdit);
+  assert.deepEqual(
+    [cleaned.accentColor, cleaned.secondaryColor, cleaned.bgStart, cleaned.bgEnd, cleaned.videoTitle, cleaned.introLine, cleaned.outroLine],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+  );
 });
