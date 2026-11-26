@@ -15,7 +15,7 @@ CTV works end to end on the author's machine, with a small local model, on one r
 
 ## Ideas
 
-- 🙋 **Subtitles, next steps:** `.srt` export exists (thanks Dathinel). Still open (see #8): `.vtt`, wrapping long captions into readable lines and splitting them over a scene's duration.
+- ✅ **Subtitles:** `.srt` and `.vtt` with readable, proportionally timed cues are done (thanks Dathinel, #7 and #10). Possible next step: burn-in captions as an option.
 - 🙋 **More promo templates** (different camera language, vertical 9:16 and square formats for social posts).
 - 🙋 **Packaging:** electron-builder installers for Windows / macOS / Linux (unsigned is fine to start).
 - 🙋 **Docker image** that runs the pipeline headless with a local model sidecar.
