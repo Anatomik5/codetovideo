@@ -77,4 +77,4 @@ ollama pull gemma4:e2b
 node scripts/bench-models.cjs --models qwen3.5:4b,gemma4:e2b,gemma4:e4b
 ```
 
-Without `--file` it uses the bundled `examples/hello-wizard`; pass `--file`, `--upload` and `--prompt` to test your own app. Results land in `out/bench/<timestamp>/` (`results.json`, `backdrops.png`, one log per model). Please share yours in the discussion issue.
+Without `--file` it uses the bundled `examples/hello-wizard`; pass `--file`, `--upload` and `--prompt` to test your own app. Results land in `out/bench/<timestamp>/` (`results.json`, `backdrops.png`, one log per model). Please share yours in [issue #11](https://github.com/Anatomik5/codetovideo/issues/11).

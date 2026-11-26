@@ -168,7 +168,7 @@ First community-style comparison on one laptop (RTX 3060 6 GB), one app, one run
 | Navigation | 12/12 steps | 12/12 steps | 12/12 steps |
 | Draws its own background | no (falls back to a motif) | yes, but in the center | **yes, along the edges** |
 
-Short version: `qwen3.5:4b` or `gemma4:e2b` with `--backdrop motif` for speed and clean captions; `gemma4:e4b` if you want the model to draw the background. Try your own model with `node scripts/bench-models.cjs --models a,b,c` and share the result.
+Short version: `qwen3.5:4b` or `gemma4:e2b` with `--backdrop motif` for speed and clean captions; `gemma4:e4b` if you want the model to draw the background. Try your own model with `node scripts/bench-models.cjs --models a,b,c` and share the result in [#11](https://github.com/Anatomik5/codetovideo/issues/11).
 
 ## Honest status
 
