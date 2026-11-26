@@ -155,7 +155,7 @@ Your LLM decides which mode the instruction needs:
 
 ### Export scene subtitles
 
-Every render also writes `final.srt` into the session folder (`out/sessions/<id>/`, next to `final.mp4`): one cue per scene, shifted by the intro, using the scene title when a caption is empty. In the desktop app press **Export subtitles (.srt)** under the video to save a copy wherever you like. For an older session, or from a script, run `npm run subtitles -- out/sessions/<id>/manifest.json`.
+Every render writes `final.srt` and `final.vtt` beside the session video. Long captions wrap to about 42 characters per line and at most two lines per cue. Each cue gets a share of the scene duration based on its text length, after the intro. An empty caption uses the scene title. In the desktop app, choose SRT or WebVTT and press **Export subtitles**. To generate both files for a saved session, run `npm run subtitles -- out/sessions/<id>/manifest.json`.
 
 ## Honest status
 

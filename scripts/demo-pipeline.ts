@@ -5,7 +5,7 @@ import fs from "fs";
 import path from "path";
 import http from "http";
 import { chromium, type Browser, type Page } from "playwright";
-import { scenesToSrt } from "./export-srt";
+import { writeSubtitles } from "./export-srt";
 import { codeToHtml } from "shiki";
 
 /** Capture process.env BEFORE dotenv loads .env, so we can avoid leaking CodeToVideo-specific vars into spawned apps. */
@@ -3314,7 +3314,7 @@ async function composeAndRender(
   fs.copyFileSync(finalPath, outPath);
   // Subtitles always match the video that was just rendered (scene titles/captions + timings from the manifest).
   try {
-    fs.writeFileSync(path.join(sessionDir, "final.srt"), scenesToSrt({ introSec: manifest.introSec, scenes: manifest.scenes }), "utf8");
+    writeSubtitles(sessionDir, manifest);
   } catch (err) {
     log("Subtitles", `Skipped: ${(err as Error).message}`);
   }

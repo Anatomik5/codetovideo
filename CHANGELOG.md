@@ -2,6 +2,10 @@
 
 All notable changes. Format loosely follows [Keep a Changelog](https://keepachangelog.com/); versions follow [SemVer](https://semver.org/) (pre-1.0: anything may change).
 
+## Unreleased
+
+- Export SRT and WebVTT from the desktop app or a saved session. Long captions now use shorter, proportionally timed cues in both formats.
+
 ## [0.2.0] - first public release
 
 ### Added
