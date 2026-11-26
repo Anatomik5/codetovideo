@@ -6,7 +6,8 @@ All notable changes. Format loosely follows [Keep a Changelog](https://keepachan
 
 - Model comparison: Qwen 3.5 4B vs Gemma 4 E2B / E4B (`docs/benchmarks/`), and `scripts/bench-models.cjs` to compare any models on the same scenario.
 - Small models are more robust: malformed plan JSON is repaired and retried once; models without a thinking mode no longer fail the background step; over-long titles and captions are cut at a word boundary.
-- Export SRT and WebVTT from the desktop app or a saved session. Long captions now use shorter, proportionally timed cues in both formats.
+- Export SRT and WebVTT from the desktop app or a saved session. Long captions now use shorter, proportionally timed cues in both formats (thanks Dathinel, #10).
+- Unit tests for scene planning and partial-render planning; the planner's video probes can be injected in tests (thanks TONstories, #12).
 
 ## [0.2.0] - first public release
 

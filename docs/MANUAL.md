@@ -16,6 +16,8 @@
 
 ## 3. Connect a model
 
+Not sure which local model to use? See [Which model?](../README.md#which-model) and the [full comparison](benchmarks/2026-11-gemma4-vs-qwen.md).
+
 In the **Model** block:
 
 | You use | Provider | Model example | API key |
@@ -40,7 +42,7 @@ For Ollama the model list fills in by itself. If Ollama is not running, CTV star
 4. **Prompt** — describe the video (see tips below).
 5. Press **Generate video**. Watch the **Log**; a ~1-minute video takes several minutes. **Stop** cancels.
 
-The finished video appears in **Output**; **Export subtitles (.srt)** saves the scene captions as a subtitle file (also kept as `final.srt` in the session folder); **Show in folder** opens its location (`out/demo.mp4`).
+The finished video appears in **Output**; **Show in folder** opens its location. To save subtitles, choose **SRT** or **WebVTT** next to the button and press **Export subtitles** (both files are also kept as `final.srt` / `final.vtt` in the session folder).
 
 ### Prompt tips
 

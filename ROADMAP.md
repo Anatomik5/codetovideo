@@ -4,8 +4,10 @@ CTV works end to end on the author's machine, with a small local model, on one r
 
 ## Weak spots (please help us find more)
 
-- 🙋 **Only tested on Windows 11.** macOS and Linux paths exist (`start-app.sh`, non-Windows branches) but have not been run by anyone. Reports welcome.
+- 🙋 **Only tested on Windows 11.** The unit tests pass on macOS (contributor run, #12), but the full pipeline (browser, recording, rendering, desktop app) has not been run on macOS or Linux yet. Reports welcome ([#1](https://github.com/Anatomik5/codetovideo/issues/1)).
 - 🙋 **Only a handful of apps tried.** One real Next.js + FastAPI wizard and the bundled `hello-wizard`. Logins, multi-tab apps, drag-and-drop, canvas apps, iframes and shadow DOM are likely to defeat the agent. It stops with a `stopReason` instead of looping, but that is not the same as working.
+- 🙋 **Background drawings that miss the edges** are accepted in `--backdrop generate` mode ([#13](https://github.com/Anatomik5/codetovideo/issues/13)).
+- **Pacing varies a lot between models** when the prompt does not ask for one ([#16](https://github.com/Anatomik5/codetovideo/issues/16)).
 - 🙋 **Small-model quality.** A 4B model produces serviceable plans but often generic captions, a mediocre scene split and sparse background drawings. Prompts and validators could be much better.
 - **Button-role detection costs LLM latency** (cached per label; the first screen is classified in an unrecorded warm-up pass). A faster or non-LLM signal would help, as long as it stays language-free.
 - **Re-shoot of a single scene** can show a small cursor / scroll jump at the cut.
@@ -19,10 +21,11 @@ CTV works end to end on the author's machine, with a small local model, on one r
 - 🙋 **More promo templates** (different camera language, vertical 9:16 and square formats for social posts).
 - 🙋 **Packaging:** electron-builder installers for Windows / macOS / Linux (unsigned is fine to start).
 - 🙋 **Docker image** that runs the pipeline headless with a local model sidecar.
-- 🙋 **More unit tests** for `planScenes`, edit-patch parsing and the partial-render planner.
+- ✅ **Unit tests for scene planning and the partial-render planner** (thanks TONstories, #12). 🙋 Still open: tests for scene-edit handling ([#14](https://github.com/Anatomik5/codetovideo/issues/14)).
 - **Optional narration with a free local TTS** (opt-in, off by default, keeping the "no paid service" rule): design discussion in #9. Background music is a later question.
 - **Better scene planning from a user's own storyboard** (a Markdown outline instead of one prompt).
 - **Pluggable "format" API** so formats can live outside the core.
+- 🙋 **Runtimes without an OpenAI-compatible API** (for example LiteRT-LM builds of Gemma 4): a small bridge ([#15](https://github.com/Anatomik5/codetovideo/issues/15)).
 - **Vision-assisted navigation** for strong multimodal models (optional, never required).
 - **Translations** of the README and manual (see CONTRIBUTING.md).
 
