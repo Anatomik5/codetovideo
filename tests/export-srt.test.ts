@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import {scenesToSrt, writeSubtitles} from "../scripts/export-srt";
+import {saveSubtitle, scenesToSrt, writeSubtitles} from "../scripts/export-srt";
 
 test("offsets scene captions by the intro and falls back to the title", () => {
   const result = scenesToSrt({introSec: 2.6, scenes: [
@@ -32,4 +32,20 @@ test("both files preserve scene boundaries and Unicode in an unspaced caption", 
   const vtt = fs.readFileSync(files.vtt, "utf8");
   assert.equal(srt, `1\n00:00:01,000 --> 00:00:01,084\n${"映".repeat(41)}🎬\n${"字".repeat(42)}\n\n2\n00:00:01,084 --> 00:00:01,087\n<&>\n`);
   assert.equal(vtt, "WEBVTT\n\n" + srt.replace(/^\d+\n/gm, "").replace(/(\d{2}),(\d{3})/g, "$1.$2").replace("<&>", "&lt;&amp;&gt;"));
+});
+
+test("saving a missing subtitle format preserves edited session files", (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ctv-legacy-"));
+  t.after(() => fs.rmSync(dir, {recursive: true, force: true}));
+  const manifest = path.join(dir, "manifest.json");
+  fs.writeFileSync(manifest, JSON.stringify({introSec: 0, scenes: [
+    {startSec: 0, endSec: 1, caption: "Original", title: ""},
+  ]}));
+  const edited = path.join(dir, "final.srt");
+  fs.writeFileSync(edited, "Hand-edited caption\r\n");
+  const target = path.join(dir, "copy.vtt");
+  saveSubtitle(manifest, "vtt", target);
+  assert.match(fs.readFileSync(target, "utf8"), /^WEBVTT[\s\S]+Original/);
+  assert.equal(fs.readFileSync(edited, "utf8"), "Hand-edited caption\r\n");
+  assert.ok(!fs.existsSync(path.join(dir, "final.vtt")));
 });

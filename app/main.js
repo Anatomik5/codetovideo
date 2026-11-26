@@ -129,13 +129,6 @@ ipcMain.handle("subtitles:export", async (_e, saveTo, format = "srt") => {
   if (!dir) return { ok: false, error: "No saved session yet. Generate a video first." };
   const source = path.join(dir, `final.${format}`);
   try {
-    if (!fs.existsSync(source) || !fs.existsSync(path.join(dir, "final.vtt"))) {
-      await new Promise((resolve, reject) => {
-        const c = spawn(nodeBin(), [TS_NODE, "scripts/export-srt.ts", path.join(dir, "manifest.json")], { cwd: ROOT, windowsHide: true, stdio: "ignore" });
-        c.on("error", reject);
-        c.on("exit", (code) => (code === 0 ? resolve() : reject(new Error("The subtitle exporter failed."))));
-      });
-    }
     let target = saveTo;
     if (!target) {
       let title = "video";
@@ -148,7 +141,16 @@ ipcMain.handle("subtitles:export", async (_e, saveTo, format = "srt") => {
       if (r.canceled || !r.filePath) return { ok: false, canceled: true };
       target = r.filePath;
     }
-    if (path.resolve(source) !== path.resolve(target)) fs.copyFileSync(source, target);
+    if (fs.existsSync(source)) {
+      if (path.resolve(source) !== path.resolve(target)) fs.copyFileSync(source, target);
+    } else {
+      await new Promise((resolve, reject) => {
+        const args = [TS_NODE, "scripts/save-subtitle.ts", path.join(dir, "manifest.json"), format, target];
+        const c = spawn(nodeBin(), args, { cwd: ROOT, windowsHide: true, stdio: "ignore" });
+        c.on("error", reject);
+        c.on("exit", (code) => (code === 0 ? resolve() : reject(new Error("The subtitle exporter failed."))));
+      });
+    }
     return { ok: true, path: target };
   } catch (err) {
     return { ok: false, error: String((err && err.message) || err) };

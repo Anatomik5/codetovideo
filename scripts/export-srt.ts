@@ -83,6 +83,12 @@ export function scenesToSrt(manifest: Manifest): string {
   return serialize(sceneCues(manifest), "srt");
 }
 
+/** Generate just the file requested by the desktop Save dialog for a legacy session. */
+export function saveSubtitle(manifestPath: string, format: "srt" | "vtt", target: string): void {
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  fs.writeFileSync(target, serialize(sceneCues(manifest), format), "utf8");
+}
+
 export function writeSubtitles(dir: string, manifest: Manifest) {
   const cues = sceneCues(manifest);
   const paths = { srt: path.join(dir, "final.srt"), vtt: path.join(dir, "final.vtt") };
